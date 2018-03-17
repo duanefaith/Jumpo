@@ -12,6 +12,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        ignoredColliderGroups: {
+            default: [],
+            type: [cc.String]
+        }
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -35,6 +39,21 @@ cc.Class({
 
     start () {
 
+    },
+
+    onBeginContact (contact, selfCollider, otherCollider) {
+        let ignored = false;
+        let groupName = otherCollider.node.group;
+        console.log(groupName);
+        for (let ignoredColliderGroup of this.ignoredColliderGroups) {
+            if (ignoredColliderGroup === groupName) {
+                ignored = true;
+                break;
+            }
+        }
+        if (ignored) {
+            contact.disabled = true;
+        }
     },
 
     // update (dt) {},

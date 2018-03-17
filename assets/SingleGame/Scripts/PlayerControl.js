@@ -128,18 +128,17 @@ cc.Class({
     lateUpdate (dt) {
         let currentPosition = this.node.position;
         if (this.isFalling) {
-            console.log(currentPosition.y + ' ' + this.originalPosition.y + this.body.awake);
-            if (currentPosition.y <= this.originalPosition.y) {
+            if (currentPosition.y - this.originalPosition.y <= 1) {
+                this.jumpStart = this.originalPosition;
                 this.isFalling = false;
                 this.node.group = 'default';
                 this.setBoxesAlpha(255);
             }
         } else {
-            if (currentPosition.y < this.jumpStart.y) {
+            if (currentPosition.y - this.jumpStart.y < -1) {
                 this.isFalling = true;
                 this.node.group = 'falling'
                 this.setBoxesAlpha(100);
-                console.log('falling');
             }
         }
     },
