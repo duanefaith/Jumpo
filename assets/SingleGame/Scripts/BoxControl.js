@@ -31,17 +31,11 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        // this.body = this.getComponent(cc.RigidBody);
-        // this.joint = this.getComponent(cc.RevoluteJoint)
-    },
+    // onLoad () {},
 
     start () {
 
     },
 
     // update (dt) {},
-    lateUpdate (dt) {
-        // console.log(this.joint.getJointAngle());
-    },
 });

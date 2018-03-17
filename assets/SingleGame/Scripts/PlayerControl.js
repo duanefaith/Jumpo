@@ -69,6 +69,15 @@ cc.Class({
             this.graphicsPannel.stroke();
             return destVec;
         };
+
+        this.isFalling = false;
+        this.originalPosition = this.node.position;
+        this.jumpStart = this.originalPosition;
+
+        this.setBoxesAlpha = (alpha) => {
+            let boxManager = this.node.parent.getComponent("BoxManager");
+            boxManager.setBoxesAlpha(alpha);
+        };
     },
 
     start () {
@@ -112,9 +121,26 @@ cc.Class({
         if (this.body.awake) {
             return;
         }
+        this.jumpStart = this.node.position;
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
     },
 
     lateUpdate (dt) {
+        let currentPosition = this.node.position;
+        if (this.isFalling) {
+            console.log(currentPosition.y + ' ' + this.originalPosition.y + this.body.awake);
+            if (currentPosition.y <= this.originalPosition.y) {
+                this.isFalling = false;
+                this.node.group = 'default';
+                this.setBoxesAlpha(255);
+            }
+        } else {
+            if (currentPosition.y < this.jumpStart.y) {
+                this.isFalling = true;
+                this.node.group = 'falling'
+                this.setBoxesAlpha(100);
+                console.log('falling');
+            }
+        }
     },
 });
