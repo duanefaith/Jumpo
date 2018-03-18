@@ -1838,13 +1838,19 @@
       "__id__": 47
     },
     "onceCreatedCount": 2,
-    "maxBoxWidth": 280,
-    "minBoxWidth": 250,
-    "maxBoxHeight": 280,
-    "minBoxHeight": 250,
-    "generateMinLeftX": -150,
-    "generateMaxRigthX": 350,
-    "generateMaxInterval": 260,
-    "generateMinInterval": 240
+    "minBoxSize": {
+      "__type__": "cc.Size",
+      "width": 180,
+      "height": 180
+    },
+    "maxBoxSize": {
+      "__type__": "cc.Size",
+      "width": 220,
+      "height": 220
+    },
+    "minBoxLeftX": -150,
+    "maxBoxRigthX": 350,
+    "minBoxYInterval": 240,
+    "maxBoxYInterval": 260
   }
 ]

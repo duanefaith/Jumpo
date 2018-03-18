@@ -30,29 +30,23 @@ cc.Class({
         onceCreatedCount: {
             default: 2
         },
-        maxBoxWidth: {
-            default: 220
+        minBoxSize: {
+            default: cc.size(180, 180)
         },
-        minBoxWidth: {
-            default: 180
+        maxBoxSize: {
+            default: cc.size(220, 220)
         },
-        maxBoxHeight: {
-            default: 220
-        },
-        minBoxHeight: {
-            default: 180
-        },
-        generateMinLeftX: {
+        minBoxLeftX: {
             default: -150
         },
-        generateMaxRigthX: {
+        maxBoxRigthX: {
             default: 350
         },
-        generateMaxInterval: {
-            default: 260
-        },
-        generateMinInterval: {
+        minBoxYInterval: {
             default: 240
+        },
+        maxBoxYInterval: {
+            default: 260
         }
     },
 
@@ -69,15 +63,15 @@ cc.Class({
                     highestBoxTop = top;
                 }
             }
-            if (highestBoxTop > this.target.position.y) {
+            if (highestBoxTop - this.target.position.y > this.onceCreatedCount * this.minBoxYInterval) {
                 return false;
             }
 
             for (let i = 0; i < this.onceCreatedCount; i ++) {
-                let boxWidth = this.minBoxWidth + Math.random() * (this.maxBoxWidth - this.minBoxWidth);
-                let boxHeight = this.minBoxHeight + Math.random() * (this.maxBoxHeight - this.minBoxHeight);
-                let boxX = this.generateMinLeftX + Math.random() * (this.generateMaxRigthX  - this.generateMinLeftX  - boxWidth);
-                let boxY = highestBoxTop + this.generateMinInterval + Math.random() * (this.generateMaxInterval - this.generateMaxInterval);
+                let boxWidth = this.minBoxSize.width + Math.random() * (this.maxBoxSize.width - this.minBoxSize.width);
+                let boxHeight = this.minBoxSize.height + Math.random() * (this.maxBoxSize.height - this.minBoxSize.height);
+                let boxX = this.minBoxLeftX + Math.random() * (this.maxBoxRigthX  - this.minBoxLeftX  - boxWidth);
+                let boxY = highestBoxTop + this.minBoxYInterval + Math.random() * (this.maxBoxYInterval - this.minBoxYInterval);
 
                 let newBox = cc.instantiate(this.boxPrefab);
                 this.node.addChild(newBox);
