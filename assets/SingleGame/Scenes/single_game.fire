@@ -1842,8 +1842,8 @@
     "minBoxWidth": 250,
     "maxBoxHeight": 280,
     "minBoxHeight": 250,
-    "generateMinLeftX": 62,
-    "generateMaxRigthX": 598,
+    "generateMinLeftX": -150,
+    "generateMaxRigthX": 350,
     "generateMaxInterval": 260,
     "generateMinInterval": 240
   }

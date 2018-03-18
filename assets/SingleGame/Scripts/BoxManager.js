@@ -43,10 +43,10 @@ cc.Class({
             default: 180
         },
         generateMinLeftX: {
-            default: -225
+            default: -150
         },
         generateMaxRigthX: {
-            default: 225
+            default: 350
         },
         generateMaxInterval: {
             default: 260
@@ -76,7 +76,7 @@ cc.Class({
             for (let i = 0; i < this.onceCreatedCount; i ++) {
                 let boxWidth = this.minBoxWidth + Math.random() * (this.maxBoxWidth - this.minBoxWidth);
                 let boxHeight = this.minBoxHeight + Math.random() * (this.maxBoxHeight - this.minBoxHeight);
-                let boxX = this.generateMinLeftX + Math.random() * (this.generateMaxRigthX - boxWidth - this.generateMinLeftX);
+                let boxX = this.generateMinLeftX + Math.random() * (this.generateMaxRigthX  - this.generateMinLeftX  - boxWidth);
                 let boxY = highestBoxTop + this.generateMinInterval + Math.random() * (this.generateMaxInterval - this.generateMaxInterval);
 
                 let newBox = cc.instantiate(this.boxPrefab);
