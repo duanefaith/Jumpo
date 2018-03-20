@@ -23,6 +23,10 @@ cc.Class({
             default: null,
             type: cc.Camera
         },
+        scoreLabel: {
+            default: null,
+            type: cc.Label
+        },
         leftWallPrefab: {
             default: null,
             type: cc.Prefab
@@ -52,6 +56,8 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.scoreLabel.node.zIndex = 1;
+
         cc.director.getPhysicsManager().gravity = new cc.Vec2(0, this.gravity)
 
         let startLocation = null;
@@ -138,8 +144,6 @@ cc.Class({
                 newLeftWall.setPosition(new cc.Vec2(topMostLeftWall.position.x, topMostLeftWall.position.y + topMostLeftWall.height));
                 this.camera.addTarget(newLeftWall);
                 this.leftWalls.push(newLeftWall);
-                console.log(newLeftWall.position);
-                console.log(this.node.children);
             }
         }
 
@@ -162,5 +166,8 @@ cc.Class({
                 this.backgrounds.push(newBackground);
             }
         }
+
+        let score = this.getComponent('BoxManager').getScore();
+        this.scoreLabel.string = score;
     },
 });

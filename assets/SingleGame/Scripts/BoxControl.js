@@ -44,7 +44,6 @@ cc.Class({
     onBeginContact (contact, selfCollider, otherCollider) {
         let ignored = false;
         let groupName = otherCollider.node.group;
-        console.log(groupName);
         for (let ignoredColliderGroup of this.ignoredColliderGroups) {
             if (ignoredColliderGroup === groupName) {
                 ignored = true;

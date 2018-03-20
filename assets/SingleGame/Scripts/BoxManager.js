@@ -92,12 +92,22 @@ cc.Class({
     },
 
     start () {
-
+        this.score = 0;
     },
 
     lateUpdate (dt) {
         if (this.autoCreate) {
             this.generateBox();
+        }
+        let targetBody = this.target.getComponent(cc.RigidBody);
+        if (!targetBody.awake) {
+            let count = 0;
+            for (let box of this.boxes) {
+                if ((this.target.position.y - (box.position.y + box.height / 2)) >= -1) {
+                    count = count + 1;
+                }
+            }
+            this.score = count;
         }
     },
 
@@ -105,5 +115,9 @@ cc.Class({
         this.boxes.forEach((box) => {
             box.opacity = alpha;
         });
+    },
+
+    getScore () {
+        return this.score;
     },
 });

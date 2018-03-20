@@ -38,7 +38,7 @@ cc.Class({
     },
 
     onClick (e) {
-        console.log('click');
+        cc.director.loadScene('single_game');
     },
 
     // update (dt) {},
