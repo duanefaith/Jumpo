@@ -18,6 +18,34 @@ cc.Class({
         playerControl: {
             default: null,
             type: cc.Node
+        },
+        camera: {
+            default: null,
+            type: cc.Camera
+        },
+        leftWallPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        rightWallPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        backgroundPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        leftWallInitPosition: {
+            default: new cc.Vec2(-289, 807)
+        },
+        rightWallInitPosition: {
+            default: new cc.Vec2(289, 807)
+        },
+        backgroundInitPosition: {
+            default: new cc.Vec2(0, 1447)
+        },
+        backgroundZIndex: {
+            default: -1
         }
     },
 
@@ -57,11 +85,82 @@ cc.Class({
                 lastLocation = null;
             }
         });
+
+        this.leftWalls = [];
+        this.rightWalls = [];
+        this.backgrounds = [];
+
+        this.getTopMostNode = (nodes) => {
+            let topMostNode = null;
+            for (let node of nodes) {
+                if (topMostNode === null) {
+                    topMostNode = node;
+                } else {
+                    if (topMostNode.y < node.y) {
+                        topMostNode = node;
+                    }
+                }
+            }
+            return topMostNode;
+        };
     },
 
     start () {
+        let newLeftWall = cc.instantiate(this.leftWallPrefab);
+        this.node.addChild(newLeftWall);
+        newLeftWall.setPosition(this.leftWallInitPosition);
+        this.camera.addTarget(newLeftWall);
+        this.leftWalls.push(newLeftWall);
 
+        let newRightWall = cc.instantiate(this.rightWallPrefab);
+        this.node.addChild(newRightWall);
+        newRightWall.setPosition(this.rightWallInitPosition);
+        this.camera.addTarget(newRightWall);
+        this.rightWalls.push(newRightWall);
+
+        let newBackground = cc.instantiate(this.backgroundPrefab);
+        this.node.addChild(newBackground, this.backgroundZIndex);
+        newBackground.setPosition(this.backgroundInitPosition);
+        this.camera.addTarget(newBackground);
+        this.backgrounds.push(newBackground);
     },
 
-    // update (dt) {},
+    lateUpdate (dt) {
+        let topMostLeftWall = this.getTopMostNode(this.leftWalls);
+        let topMostRightWall = this.getTopMostNode(this.rightWalls);
+        let topMostBackground = this.getTopMostNode(this.backgrounds);
+        let playerPosition = this.playerControl.position;
+
+        if (topMostLeftWall !== null) {
+            if (playerPosition.y > (topMostLeftWall.position.y + topMostLeftWall.height / 2)) {
+                let newLeftWall = cc.instantiate(this.leftWallPrefab);
+                this.node.addChild(newLeftWall);
+                newLeftWall.setPosition(new cc.Vec2(topMostLeftWall.position.x, topMostLeftWall.position.y + topMostLeftWall.height));
+                this.camera.addTarget(newLeftWall);
+                this.leftWalls.push(newLeftWall);
+                console.log(newLeftWall.position);
+                console.log(this.node.children);
+            }
+        }
+
+        if (topMostRightWall !== null) {
+            if (playerPosition.y > (topMostRightWall.position.y + topMostRightWall.height / 2)) {
+                let newRightWall = cc.instantiate(this.rightWallPrefab);
+                this.node.addChild(newRightWall);
+                newRightWall.setPosition(new cc.Vec2(topMostRightWall.position.x, topMostRightWall.position.y + topMostRightWall.height));
+                this.camera.addTarget(newRightWall);
+                this.rightWalls.push(newRightWall);
+            }
+        }
+
+        if (topMostBackground !== null) {
+            if (playerPosition.y > (topMostBackground.position.y + topMostBackground.height / 2)) {
+                let newBackground = cc.instantiate(this.backgroundPrefab);
+                this.node.addChild(newBackground, this.backgroundZIndex);
+                newBackground.setPosition(new cc.Vec2(topMostBackground.position.x, topMostBackground.position.y + topMostBackground.height));
+                this.camera.addTarget(newBackground);
+                this.backgrounds.push(newBackground);
+            }
+        }
+    },
 });
