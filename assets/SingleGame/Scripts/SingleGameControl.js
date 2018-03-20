@@ -129,10 +129,10 @@ cc.Class({
         let topMostLeftWall = this.getTopMostNode(this.leftWalls);
         let topMostRightWall = this.getTopMostNode(this.rightWalls);
         let topMostBackground = this.getTopMostNode(this.backgrounds);
-        let playerPosition = this.playerControl.position;
+        let cameraPosition = this.camera.node.parent.position;
 
         if (topMostLeftWall !== null) {
-            if (playerPosition.y > topMostLeftWall.position.y) {
+            if (cameraPosition.y > topMostLeftWall.position.y) {
                 let newLeftWall = cc.instantiate(this.leftWallPrefab);
                 this.node.addChild(newLeftWall);
                 newLeftWall.setPosition(new cc.Vec2(topMostLeftWall.position.x, topMostLeftWall.position.y + topMostLeftWall.height));
@@ -144,7 +144,7 @@ cc.Class({
         }
 
         if (topMostRightWall !== null) {
-            if (playerPosition.y > topMostRightWall.position.y) {
+            if (cameraPosition.y > topMostRightWall.position.y) {
                 let newRightWall = cc.instantiate(this.rightWallPrefab);
                 this.node.addChild(newRightWall);
                 newRightWall.setPosition(new cc.Vec2(topMostRightWall.position.x, topMostRightWall.position.y + topMostRightWall.height));
@@ -154,7 +154,7 @@ cc.Class({
         }
 
         if (topMostBackground !== null) {
-            if (playerPosition.y > topMostBackground.position.y) {
+            if (cameraPosition.y > topMostBackground.position.y) {
                 let newBackground = cc.instantiate(this.backgroundPrefab);
                 this.node.addChild(newBackground, this.backgroundZIndex);
                 newBackground.setPosition(new cc.Vec2(topMostBackground.position.x, topMostBackground.position.y + topMostBackground.height));
