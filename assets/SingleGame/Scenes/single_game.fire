@@ -1382,7 +1382,23 @@
     },
     "backgroundPrefab": {
       "__uuid__": "b048495e-5bff-4502-a3b0-4422c082ca18"
-    }
+    },
+    "leftWallInitPosition": {
+      "__type__": "cc.Vec2",
+      "x": -289,
+      "y": 807
+    },
+    "rightWallInitPosition": {
+      "__type__": "cc.Vec2",
+      "x": 289,
+      "y": 807
+    },
+    "backgroundInitPosition": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 1447
+    },
+    "backgroundZIndex": -1
   },
   {
     "__type__": "472damY6+BIPo61+5NAyNND",
