@@ -59,26 +59,26 @@
         "__id__": 3
       },
       {
-        "__id__": 22
+        "__id__": 21
       },
       {
-        "__id__": 32
+        "__id__": 31
       },
       {
-        "__id__": 38
+        "__id__": 37
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
+        "__id__": 40
+      },
+      {
         "__id__": 41
       },
       {
         "__id__": 42
-      },
-      {
-        "__id__": 43
       }
     ],
     "_prefab": null,
@@ -150,9 +150,6 @@
       },
       {
         "__id__": 20
-      },
-      {
-        "__id__": 21
       }
     ],
     "_prefab": null,
@@ -728,32 +725,6 @@
     "_originalHeight": 0
   },
   {
-    "__type__": "cc.Widget",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 3
-    },
-    "_enabled": true,
-    "isAlignOnce": true,
-    "_target": null,
-    "_alignFlags": 44,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 0,
-    "_originalHeight": 0
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -810,15 +781,18 @@
     },
     "_children": [
       {
-        "__id__": 23
+        "__id__": 22
       },
       {
-        "__id__": 26
+        "__id__": 25
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
+      {
+        "__id__": 27
+      },
       {
         "__id__": 28
       },
@@ -827,9 +801,6 @@
       },
       {
         "__id__": 30
-      },
-      {
-        "__id__": 31
       }
     ],
     "_prefab": null,
@@ -874,17 +845,17 @@
     "_name": "player",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 22
+      "__id__": 21
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 24
+        "__id__": 23
       },
       {
-        "__id__": 25
+        "__id__": 24
       }
     ],
     "_prefab": null,
@@ -929,7 +900,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 23
+      "__id__": 22
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -955,7 +926,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 23
+      "__id__": 22
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -981,14 +952,14 @@
     "_name": "graphicsPanel",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 22
+      "__id__": 21
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 27
+        "__id__": 26
       }
     ],
     "_prefab": null,
@@ -1033,7 +1004,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 26
+      "__id__": 25
     },
     "_enabled": true,
     "_lineWidth": 1.2,
@@ -1060,7 +1031,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 22
+      "__id__": 21
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -1086,7 +1057,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 22
+      "__id__": 21
     },
     "_enabled": true,
     "_type": 2,
@@ -1109,7 +1080,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 22
+      "__id__": 21
     },
     "_enabled": true,
     "tag": 0,
@@ -1134,7 +1105,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 22
+      "__id__": 21
     },
     "_enabled": true,
     "impulseRatio": 500,
@@ -1144,10 +1115,10 @@
     "dashGap": 15,
     "minScaleRatio": 0.5,
     "playerIcon": {
-      "__id__": 23
+      "__id__": 22
     },
     "graphicsPannel": {
-      "__id__": 27
+      "__id__": 26
     }
   },
   {
@@ -1159,17 +1130,17 @@
     },
     "_children": [
       {
-        "__id__": 33
+        "__id__": 32
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 36
+        "__id__": 35
       },
       {
-        "__id__": 37
+        "__id__": 36
       }
     ],
     "_prefab": null,
@@ -1214,17 +1185,17 @@
     "_name": "camera",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 32
+      "__id__": 31
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 33
       },
       {
-        "__id__": 35
+        "__id__": 34
       }
     ],
     "_prefab": null,
@@ -1269,12 +1240,12 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 32
     },
     "_enabled": true,
     "_targets": [
       {
-        "__id__": 22
+        "__id__": 21
       },
       {
         "__id__": 3
@@ -1287,7 +1258,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 32
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -1313,7 +1284,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 31
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -1339,11 +1310,11 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 31
     },
     "_enabled": true,
     "focus": {
-      "__id__": 22
+      "__id__": 21
     }
   },
   {
@@ -1358,10 +1329,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 39
+        "__id__": 38
       },
       {
-        "__id__": 40
+        "__id__": 39
       }
     ],
     "_prefab": null,
@@ -1406,7 +1377,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 38
+      "__id__": 37
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -1428,7 +1399,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 38
+      "__id__": 37
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -1475,13 +1446,13 @@
     "_enabled": true,
     "gravity": -1920,
     "playerControl": {
-      "__id__": 22
+      "__id__": 21
     },
     "camera": {
-      "__id__": 34
+      "__id__": 33
     },
     "scoreLabel": {
-      "__id__": 39
+      "__id__": 38
     },
     "leftWallPrefab": {
       "__uuid__": "b268e6e4-331d-4888-a0b6-4dcf97f429d9"
@@ -1519,13 +1490,13 @@
     "_enabled": true,
     "autoCreate": true,
     "target": {
-      "__id__": 22
+      "__id__": 21
     },
     "boxPrefab": {
       "__uuid__": "e9358cf4-9c11-4eb6-9d99-ea3e35e03312"
     },
     "camera": {
-      "__id__": 34
+      "__id__": 33
     },
     "onceCreatedCount": 2,
     "minBoxSize": {
