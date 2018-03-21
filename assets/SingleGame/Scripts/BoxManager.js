@@ -99,8 +99,7 @@ cc.Class({
         if (this.autoCreate) {
             this.generateBox();
         }
-        let targetBody = this.target.getComponent(cc.RigidBody);
-        if (!targetBody.awake) {
+        if (this.target.getComponent('PlayerControl').isStill()) {
             let count = 0;
             for (let box of this.boxes) {
                 if ((this.target.position.y - (box.position.y + box.height / 2)) >= -1) {

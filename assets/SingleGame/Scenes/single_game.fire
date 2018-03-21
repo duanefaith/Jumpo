@@ -1119,7 +1119,13 @@
     },
     "graphicsPannel": {
       "__id__": 26
-    }
+    },
+    "tremblingVariance": {
+      "__type__": "cc.Vec2",
+      "x": 0.05,
+      "y": 0.05
+    },
+    "tremblingFrames": 10
   },
   {
     "__type__": "cc.Node",
@@ -1444,7 +1450,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "gravity": -1920,
+    "gravity": -5000,
     "playerControl": {
       "__id__": 21
     },

@@ -37,6 +37,12 @@ cc.Class({
         graphicsPannel: {
             default: null,
             type: cc.Graphics
+        },
+        tremblingVariance: {
+            default: new cc.Vec2(0.05, 0.05)
+        },
+        tremblingFrames: {
+            default: 10
         }
     },
 
@@ -78,14 +84,30 @@ cc.Class({
             let boxManager = this.node.parent.getComponent("BoxManager");
             boxManager.setBoxesAlpha(alpha);
         };
+
+        this.calcPositionVariance = (positionList) => {
+            let sumVec = new cc.Vec2(0, 0);
+            for (let position of positionList) {
+                sumVec.addSelf(position);
+            }
+            let avgVec = sumVec.div(positionList.length);
+            let varianceVec = new cc.Vec2(0, 0);
+            for (let position of positionList) {
+                let subVec = position.sub(avgVec);
+                varianceVec.addSelf(new cc.Vec2(subVec.x * subVec.x, subVec.y * subVec.y));
+            }
+            varianceVec.divSelf(positionList.length);
+            return varianceVec;
+        }
     },
 
     start () {
-
+        this.still = true;
+        this.positionList = [];
     },
 
     applyForce (vec) {
-        if (this.body.awake) {
+        if (!this.isStill()) {
             return;
         }
         
@@ -118,7 +140,7 @@ cc.Class({
 
     jump (vec) {
         this.graphicsPannel.clear();
-        if (this.body.awake) {
+        if (!this.isStill()) {
             return;
         }
         this.jumpStart = this.node.position;
@@ -127,6 +149,17 @@ cc.Class({
 
     lateUpdate (dt) {
         let currentPosition = this.node.position;
+        if (this.positionList.length > this.tremblingFrames) {
+            this.positionList.shift();
+        }
+        this.positionList.push(currentPosition);
+        let varianceVec = this.calcPositionVariance(this.positionList);
+        if (varianceVec.x < this.tremblingVariance.x && varianceVec.y < this.tremblingVariance.y) {
+            this.still = true;
+        } else {
+            this.still = false;
+        }
+
         if (this.isFalling) {
             if (currentPosition.y - this.originalPosition.y <= 1) {
                 this.jumpStart = this.originalPosition;
@@ -141,5 +174,9 @@ cc.Class({
                 this.setBoxesAlpha(100);
             }
         }
+    },
+
+    isStill () {
+        return this.still;
     },
 });
