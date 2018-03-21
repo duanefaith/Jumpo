@@ -47,8 +47,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 62,
-      "height": 1954
+      "width": 134,
+      "height": 2000
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -112,7 +112,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false
   },
   {
@@ -136,8 +136,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 62,
-      "height": 1954
+      "width": 134,
+      "height": 2000
     }
   },
   {

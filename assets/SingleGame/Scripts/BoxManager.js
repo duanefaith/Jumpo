@@ -56,9 +56,9 @@ cc.Class({
         this.boxes = [];
         let originalPosition = this.target.position;
         this.generateBox = () => {
-            let highestBoxTop = originalPosition.y;
+            let highestBoxTop = originalPosition.y + this.target.height / 2;
             for (let box of this.boxes) {
-                let top = box.position.y + box.height;
+                let top = box.position.y + box.height / 2;
                 if (top > highestBoxTop) {
                     highestBoxTop = top;
                 }
@@ -70,8 +70,8 @@ cc.Class({
             for (let i = 0; i < this.onceCreatedCount; i ++) {
                 let boxWidth = this.minBoxSize.width + Math.random() * (this.maxBoxSize.width - this.minBoxSize.width);
                 let boxHeight = this.minBoxSize.height + Math.random() * (this.maxBoxSize.height - this.minBoxSize.height);
-                let boxX = this.minBoxLeftX + Math.random() * (this.maxBoxRigthX  - this.minBoxLeftX  - boxWidth);
-                let boxY = highestBoxTop + this.minBoxYInterval + Math.random() * (this.maxBoxYInterval - this.minBoxYInterval);
+                let boxX = this.minBoxLeftX + boxWidth / 2 + Math.random() * (this.maxBoxRigthX - this.minBoxLeftX - boxWidth);
+                let boxY = highestBoxTop + this.minBoxYInterval + boxHeight / 2 + Math.random() * (this.maxBoxYInterval - this.minBoxYInterval);
 
                 let newBox = cc.instantiate(this.boxPrefab);
                 this.node.addChild(newBox);

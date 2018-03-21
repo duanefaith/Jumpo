@@ -99,8 +99,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
-      "height": 960
+      "width": 1080,
+      "height": 1920
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -108,8 +108,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 320,
-      "y": 480
+      "x": 540,
+      "y": 960
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -170,7 +170,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 310
     },
     "_rotationX": 0,
@@ -180,7 +180,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -325
+      "y": -805
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -225,7 +225,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 62
     },
     "_rotationX": 0,
@@ -332,7 +332,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 62
     },
     "_rotationX": 0,
@@ -439,7 +439,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 62
     },
     "_rotationX": 0,
@@ -546,7 +546,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 62
     },
     "_rotationX": 0,
@@ -653,7 +653,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 62
     },
     "_rotationX": 0,
@@ -768,7 +768,7 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 640,
+      "width": 1080,
       "height": 310
     }
   },
@@ -821,8 +821,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97,
-      "height": 101
+      "width": 200,
+      "height": 200
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -831,7 +831,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -119
+      "y": -550
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -876,8 +876,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97,
-      "height": 101
+      "width": 200,
+      "height": 200
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1096,8 +1096,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 97,
-      "height": 101
+      "width": 200,
+      "height": 200
     }
   },
   {
@@ -1161,8 +1161,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
-      "height": 960
+      "width": 1080,
+      "height": 1920
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1216,8 +1216,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
-      "height": 960
+      "width": 1080,
+      "height": 1920
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1362,8 +1362,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 269,
-      "y": 420
+      "x": 489,
+      "y": 900
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1430,8 +1430,8 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 640,
-      "height": 960
+      "width": 1080,
+      "height": 1920
     },
     "_fitWidth": true,
     "_fitHeight": false
@@ -1465,18 +1465,18 @@
     },
     "leftWallInitPosition": {
       "__type__": "cc.Vec2",
-      "x": -289,
-      "y": 807
+      "x": -473,
+      "y": 350
     },
     "rightWallInitPosition": {
       "__type__": "cc.Vec2",
-      "x": 289,
-      "y": 807
+      "x": 473,
+      "y": 350
     },
     "backgroundInitPosition": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 1447
+      "y": 750
     },
     "backgroundZIndex": -1
   },
@@ -1501,17 +1501,17 @@
     "onceCreatedCount": 2,
     "minBoxSize": {
       "__type__": "cc.Size",
-      "width": 180,
-      "height": 180
+      "width": 280,
+      "height": 280
     },
     "maxBoxSize": {
       "__type__": "cc.Size",
-      "width": 220,
-      "height": 220
+      "width": 320,
+      "height": 320
     },
-    "minBoxLeftX": -150,
-    "maxBoxRigthX": 350,
-    "minBoxYInterval": 240,
-    "maxBoxYInterval": 260
+    "minBoxLeftX": -406,
+    "maxBoxRigthX": 406,
+    "minBoxYInterval": 340,
+    "maxBoxYInterval": 360
   }
 ]
