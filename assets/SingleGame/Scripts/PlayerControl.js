@@ -173,7 +173,6 @@ cc.Class({
                 this.node.group = 'default';
                 this.setBoxesAlpha(255);
 
-                console.log(this.gameFinishCallback);
                 if (this.gameFinishCallback !== null) {
                     this.gameFinishCallback();
                 }

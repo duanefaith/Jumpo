@@ -8,6 +8,8 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
+let Global = require('Global');
+
 cc.Class({
     extends: cc.Component,
 
@@ -131,7 +133,13 @@ cc.Class({
         this.backgrounds.push(newBackground);
 
         this.playerControl.getComponent('PlayerControl').registerGameFinishCallback(() => {
-            cc.director.loadScene('welcome');
+            let finalScore = this.getComponent('BoxManager').getScore();
+            Global.updateLeaderboard(finalScore, '').then((success) => {
+                if (success) {
+                    console.log('updateLeaderboard succeed');
+                }
+                cc.director.loadScene('welcome');
+            });
         });
     },
 
