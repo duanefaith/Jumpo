@@ -129,6 +129,10 @@ cc.Class({
         newBackground.setPosition(this.backgroundInitPosition);
         this.camera.addTarget(newBackground);
         this.backgrounds.push(newBackground);
+
+        this.playerControl.getComponent('PlayerControl').registerGameFinishCallback(() => {
+            cc.director.loadScene('welcome');
+        });
     },
 
     lateUpdate (dt) {

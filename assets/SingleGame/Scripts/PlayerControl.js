@@ -99,6 +99,8 @@ cc.Class({
             varianceVec.divSelf(positionList.length);
             return varianceVec;
         }
+
+        this.gameFinishCallback = null;
     },
 
     start () {
@@ -138,6 +140,10 @@ cc.Class({
         // this.node.scaleY = scaleRatio * this.originalScaleY;
     },
 
+    registerGameFinishCallback (callback) {
+        this.gameFinishCallback = callback;
+    },
+
     jump (vec) {
         this.graphicsPannel.clear();
         if (!this.isStill()) {
@@ -166,6 +172,11 @@ cc.Class({
                 this.isFalling = false;
                 this.node.group = 'default';
                 this.setBoxesAlpha(255);
+
+                console.log(this.gameFinishCallback);
+                if (this.gameFinishCallback !== null) {
+                    this.gameFinishCallback();
+                }
             }
         } else {
             if (currentPosition.y - this.jumpStart.y < -1) {

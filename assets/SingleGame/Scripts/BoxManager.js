@@ -56,7 +56,7 @@ cc.Class({
         this.boxes = [];
         let originalPosition = this.target.position;
         this.generateBox = () => {
-            let highestBoxTop = originalPosition.y + this.target.height / 2;
+            let highestBoxTop = originalPosition.y - this.target.height / 2;
             for (let box of this.boxes) {
                 let top = box.position.y + box.height / 2;
                 if (top > highestBoxTop) {

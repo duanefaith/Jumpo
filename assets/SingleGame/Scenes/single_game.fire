@@ -1450,7 +1450,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "gravity": -5000,
+    "gravity": -2000,
     "playerControl": {
       "__id__": 21
     },
