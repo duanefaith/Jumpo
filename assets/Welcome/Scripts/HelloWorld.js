@@ -1,3 +1,5 @@
+let Global = require('Global');
+
 cc.Class({
     extends: cc.Component,
 
@@ -10,7 +12,12 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        
+        Global.getCurrentPlayerScore().then((score) => {
+            console.log(score);
+        });
+        Global.getPlayerScores().then((scores) => {
+            console.log(scores);
+        });
     },
 
     // called every frame
