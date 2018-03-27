@@ -33,6 +33,18 @@ function fbEntryToScoreItem (entry) {
 	return scoreItem;
 }
 
+module.exports.getCurrentPlayer = function () {
+	let instant = window.shared.getFBInstant();
+	if (instant) {
+		return {
+			id: instant.player.getID(),
+			name: instant.player.getName(),
+			photo: instant.player.getPhoto(),
+		};
+	}
+	return null;
+};
+
 module.exports.getCurrentPlayerScore = async function () {
 	let leaderboard = await getGlobalLeaderboard();
 	if (leaderboard != null) {

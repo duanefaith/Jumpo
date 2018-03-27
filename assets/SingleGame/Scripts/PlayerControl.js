@@ -49,7 +49,19 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.states = {
+            STATE_STILL: 0,
+            STATE_FALLING: 1,
+            STATE_FORCING_LOW: 2,
+            STATE_FORCING_HIGH: 3,
+            STATE_JUMPING: 4,
+        };
+        this.events = new cc.EventTarget();
         this.body = this.getComponent(cc.RigidBody);
+        this.playerDisplay = this.playerIcon.getComponent(dragonBones.ArmatureDisplay);
+
+        this.setState(this.states.STATE_STILL);
+
         this.originalScaleY = this.node.scaleY;
         this.getActualVec = (vec) => {
             let actualVec = vec.mul(this.impulseRatio);
@@ -76,7 +88,6 @@ cc.Class({
             return destVec;
         };
 
-        this.isFalling = false;
         this.originalPosition = this.node.position;
         this.jumpStart = this.originalPosition;
 
@@ -104,8 +115,36 @@ cc.Class({
     },
 
     start () {
-        this.still = true;
         this.positionList = [];
+
+        this.events.on('property_changed', (event) => {
+            let data = event.getUserData();
+            if (data.property == 'state') {
+                if (data.newValue == data.target.states.STATE_STILL) {
+                    data.target.playerIcon.scaleX = Math.abs(data.target.playerIcon.scaleX);
+                    data.target.playerDisplay.playAnimation('idle', 0);
+                } else if (data.newValue == data.target.states.STATE_FALLING) {
+                    data.target.playerDisplay.playAnimation('luoxia', 0);
+                } else if (data.newValue == data.target.states.STATE_FORCING_LOW) {
+                    data.target.playerDisplay.playAnimation('xuli', 1);
+                } else if (data.newValue == data.target.states.STATE_FORCING_HIGH) {
+                    data.target.playerDisplay.playAnimation('xuli2', 1);
+                } else if (data.newValue == data.target.states.STATE_JUMPING) {
+                    if (data.extra.vec.x > 0) {
+                        data.target.playerIcon.scaleX = - (Math.abs(data.target.playerIcon.scaleX));
+                    }
+                    data.target.playerDisplay.playAnimation('tiao', 1);
+                }
+            }
+        });
+    },
+
+    setState (state, extra = null) {
+        if (this.state != state) {
+            let oldState = this.state;
+            this.state = state;
+            this.events.emit('property_changed', {target: this, property: 'state', oldValue: oldState, newValue: this.state, extra: extra});
+        }
     },
 
     applyForce (vec) {
@@ -135,9 +174,11 @@ cc.Class({
             }
         }
 
-        // let forceRatio = 1 - finalDist / this.maxLineLength;
-        // let scaleRatio = this.minScaleRatio + (1 - this.minScaleRatio) * forceRatio;
-        // this.node.scaleY = scaleRatio * this.originalScaleY;
+        if ((finalDist / this.maxLineLength) <= 0.5) {
+            this.setState(this.states.STATE_FORCING_HIGH, {vec: vec});
+        } else {
+            this.setState(this.states.STATE_FORCING_LOW, {vec: vec});
+        }
     },
 
     registerGameFinishCallback (callback) {
@@ -151,6 +192,7 @@ cc.Class({
         }
         this.jumpStart = this.node.position;
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
+        this.setState(this.states.STATE_JUMPING, {vec: vec});
     },
 
     lateUpdate (dt) {
@@ -161,32 +203,46 @@ cc.Class({
         this.positionList.push(currentPosition);
         let varianceVec = this.calcPositionVariance(this.positionList);
         if (varianceVec.x < this.tremblingVariance.x && varianceVec.y < this.tremblingVariance.y) {
-            this.still = true;
+            if (!this.isForcing()) {
+                this.setState(this.states.STATE_STILL);
+            }
         } else {
-            this.still = false;
-        }
+            if (this.isFalling()) {
+                if (currentPosition.y - this.originalPosition.y <= 1) {
+                    this.jumpStart = this.originalPosition;
+                    this.setState(this.states.STATE_STILL);
+                    this.node.group = 'default';
+                    this.setBoxesAlpha(255);
 
-        if (this.isFalling) {
-            if (currentPosition.y - this.originalPosition.y <= 1) {
-                this.jumpStart = this.originalPosition;
-                this.isFalling = false;
-                this.node.group = 'default';
-                this.setBoxesAlpha(255);
-
-                if (this.gameFinishCallback !== null) {
-                    this.gameFinishCallback();
+                    if (this.gameFinishCallback !== null) {
+                        this.gameFinishCallback();
+                    }
+                }
+            } else {
+                if (currentPosition.y - this.jumpStart.y < -1) {
+                    this.setState(this.states.STATE_FALLING);
+                    this.node.group = 'falling'
+                    this.setBoxesAlpha(100);
                 }
             }
-        } else {
-            if (currentPosition.y - this.jumpStart.y < -1) {
-                this.isFalling = true;
-                this.node.group = 'falling'
-                this.setBoxesAlpha(100);
-            }
         }
+        
+    },
+
+    getEvents() {
+        return this.events;
     },
 
     isStill () {
-        return this.still;
+        return this.state == this.states.STATE_STILL || this.isForcing();
+    },
+
+    isFalling() {
+        return this.state == this.states.STATE_FALLING;
+    },
+
+    isForcing() {
+        return this.state == this.states.STATE_FORCING_LOW 
+         || this.state == this.states.STATE_FORCING_HIGH;
     },
 });
