@@ -21,6 +21,10 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        castalNode: {
+            default: null,
+            type: cc.Node
+        },
         camera: {
             default: null,
             type: cc.Camera
@@ -51,8 +55,14 @@ cc.Class({
             default: new cc.Vec2(0, 1447)
         },
         backgroundZIndex: {
+            default: -3
+        },
+        wallZIndex: {
             default: -1
-        }
+        },
+        castalNodeZIndex: {
+            default: -2
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -64,6 +74,7 @@ cc.Class({
 
         let startLocation = null;
         let lastLocation = null;
+        this.castalNode.zIndex = this.castalNodeZIndex;
         this.node.on(cc.Node.EventType.TOUCH_START, e => {
             startLocation = e.touch.getLocation();
             lastLocation = startLocation;
@@ -115,13 +126,13 @@ cc.Class({
 
     start () {
         let newLeftWall = cc.instantiate(this.leftWallPrefab);
-        this.node.addChild(newLeftWall);
+        this.node.addChild(newLeftWall, this.wallZIndex);
         newLeftWall.setPosition(this.leftWallInitPosition);
         this.camera.addTarget(newLeftWall);
         this.leftWalls.push(newLeftWall);
 
         let newRightWall = cc.instantiate(this.rightWallPrefab);
-        this.node.addChild(newRightWall);
+        this.node.addChild(newRightWall, this.wallZIndex);
         newRightWall.setPosition(this.rightWallInitPosition);
         this.camera.addTarget(newRightWall);
         this.rightWalls.push(newRightWall);
@@ -152,7 +163,7 @@ cc.Class({
         if (topMostLeftWall !== null) {
             if (cameraPosition.y > topMostLeftWall.position.y) {
                 let newLeftWall = cc.instantiate(this.leftWallPrefab);
-                this.node.addChild(newLeftWall);
+                this.node.addChild(newLeftWall, this.wallZIndex);
                 newLeftWall.setPosition(new cc.Vec2(topMostLeftWall.position.x, topMostLeftWall.position.y + topMostLeftWall.height));
                 this.camera.addTarget(newLeftWall);
                 this.leftWalls.push(newLeftWall);
@@ -162,7 +173,7 @@ cc.Class({
         if (topMostRightWall !== null) {
             if (cameraPosition.y > topMostRightWall.position.y) {
                 let newRightWall = cc.instantiate(this.rightWallPrefab);
-                this.node.addChild(newRightWall);
+                this.node.addChild(newRightWall, this.wallZIndex);
                 newRightWall.setPosition(new cc.Vec2(topMostRightWall.position.x, topMostRightWall.position.y + topMostRightWall.height));
                 this.camera.addTarget(newRightWall);
                 this.rightWalls.push(newRightWall);

@@ -299,7 +299,7 @@ cc.Class({
                     }
                 }
             } else {
-                if (currentPosition.y - this.jumpStart.y < -1) {
+                if (currentPosition.y - this.jumpStart.y + this.node.height < 0) {
                     this.setState(this.states.STATE_FALLING);
                     this.node.group = 'falling';
                     this.setBoxesAlpha(100);
