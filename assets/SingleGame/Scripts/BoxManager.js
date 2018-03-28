@@ -23,6 +23,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        connectNodePrefab: {
+            default: null,
+            type: cc.Prefab
+        },
         camera: {
             default: null,
             type: cc.Camera
@@ -54,6 +58,7 @@ cc.Class({
 
     onLoad () {
         this.boxes = [];
+        this.connectNodes = {};
         let originalPosition = this.target.position;
         this.generateBox = () => {
             let highestBoxTop = originalPosition.y - this.target.height / 2;
@@ -93,6 +98,7 @@ cc.Class({
 
     start () {
         this.score = 0;
+        this.highestReachedBox = null;
     },
 
     lateUpdate (dt) {
@@ -101,12 +107,18 @@ cc.Class({
         }
         if (this.target.getComponent('PlayerControl').isStill()) {
             let count = 0;
+            let highestReachedBox = null;
             for (let box of this.boxes) {
-                if ((this.target.position.y - (box.position.y + box.height / 2)) >= -1) {
+                if ((this.target.position.y - this.target.height / 2 - (box.position.y - box.height / 2)) >= -1) {
                     count = count + 1;
+                    if (highestReachedBox == null || box.position.y > highestReachedBox.position.y) {
+                        highestReachedBox = box;
+                    }
                 }
             }
+
             this.score = count;
+            this.highestReachedBox = highestReachedBox;
         }
     },
 
@@ -118,5 +130,72 @@ cc.Class({
 
     getScore () {
         return this.score;
+    },
+
+    getHighestReachedBox () {
+        return this.highestReachedBox;
+    },
+
+    findNearestBox (y, lowestBox = null) {
+        let boxDist = null;
+        let nearestBox = null;
+        for (let box of this.boxes) {
+            if (lowestBox && lowestBox.position.y - box.position.y > -1) {
+                continue;
+            }
+            let boxTop = box.position.y + box.height / 2;
+            let dist  = Math.abs(boxTop - y);
+            if (boxDist == null || dist < boxDist) {
+                boxDist = dist;
+                nearestBox = box;
+                if (dist == 0) {
+                    break;
+                }
+            }
+        }
+        return {
+             box: nearestBox,
+             dist: boxDist
+        };
+    },
+
+    hasConnectedNode (box, left = true) {
+        if (this.connectNodes.hasOwnProperty(box.position.y)) {
+            return this.connectNodes[box.position.y].hasOwnProperty(left ? 'left' : 'right');
+        }
+        return false;
+    },
+
+    createConnectedNode (box, left = true) {
+         let newConnectNode = cc.instantiate(this.connectNodePrefab);
+         this.node.addChild(newConnectNode);
+         let nodeX;
+         if (left) {
+            nodeX = box.position.x - box.width / 2 - newConnectNode.width / 2;
+         } else {
+            nodeX = box.position.x + box.width / 2 + newConnectNode.width / 2;
+         }
+         let nodeY = box.position.y + box.height / 2 - newConnectNode.height / 2;
+         newConnectNode.setPosition(nodeX, nodeY);
+         if (!this.connectNodes.hasOwnProperty(box.position.y)) {
+            this.connectNodes[box.position.y] = {};
+         }
+         this.camera.addTarget(newConnectNode);
+         this.connectNodes[box.position.y][left ? 'left' : 'right'] = newConnectNode;
+         return newConnectNode;
+    },
+
+    removeConnectedNode (box, left = true) {
+        if (this.connectNodes.hasOwnProperty(box.position.y)) {
+            let subNodeName = (left ? 'left' : 'right');
+            let subNode = this.connectNodes[box.position.y][subNodeName];
+            if (subNode) {
+                this.camera.removeTarget(subNode);
+                subNode.removeFromParent();
+            }
+            delete this.connectNodes[box.position.y][subNodeName];
+            return true;
+        }
+        return false;
     },
 });

@@ -35,7 +35,19 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.isPointInArea = function (point, position, size) {
+            if (point && position && size) {
+                if (point.x < (position.x - size.width / 2) || point.x > (position.x + size.width / 2)) {
+                    return false;
+                }
+                if (point.y < (position.y - size.height / 2) || point.y > (position.y + size.height / 2)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    },
 
     start () {
 
@@ -51,7 +63,44 @@ cc.Class({
             }
         }
         if (ignored) {
-            contact.disabled = true;
+            let shouldDisable = true;
+            if (otherCollider.node.hasOwnProperty('collideSetting')) {
+                let collideSetting = otherCollider.node.collideSetting;
+                let once = collideSetting.once;
+                let originalGroup = collideSetting.originalGroup;
+                if (collideSetting.hasOwnProperty('target')) {
+                    if (collideSetting.target !== this.node) {
+                        shouldDisable = false;
+                        console.log('target error');
+                    }
+                }
+                if (shouldDisable
+                     && collideSetting.hasOwnProperty('ignoreArea')
+                     && collideSetting.hasOwnProperty('ignorePosition')) {
+                    let points = contact.getWorldManifold().points;
+                    if (points && points.length > 0) {
+                        let inArea = true;
+                        for (let point of points) {
+                            if (!this.isPointInArea(this.node.convertToNodeSpaceAR(point),
+                             collideSetting.ignorePosition, collideSetting.ignoreArea)) {
+                                inArea = false;
+                                break;
+                            }
+                        }
+                        if (!inArea) {
+                            shouldDisable = false;
+                            console.log('area error');
+                        }
+                    }
+                }
+                if (once) {
+                    if (originalGroup) {
+                        otherCollider.node.group = originalGroup;
+                        delete otherCollider.node.collideSetting;
+                    }
+                }
+            }
+            contact.disabled = shouldDisable;
         }
     },
 

@@ -43,6 +43,12 @@ cc.Class({
         },
         tremblingFrames: {
             default: 10
+        },
+        grabDist: {
+            default: new cc.size(20, 20)
+        },
+        hangingColliderTolerence: {
+            default: 3,
         }
     },
 
@@ -55,10 +61,12 @@ cc.Class({
             STATE_FORCING_LOW: 2,
             STATE_FORCING_HIGH: 3,
             STATE_JUMPING: 4,
+            STATE_HANGING: 5,
         };
         this.events = new cc.EventTarget();
         this.body = this.getComponent(cc.RigidBody);
         this.playerDisplay = this.playerIcon.getComponent(dragonBones.ArmatureDisplay);
+        this.boxManager = this.node.parent.getComponent("BoxManager");
 
         this.setState(this.states.STATE_STILL);
 
@@ -92,8 +100,11 @@ cc.Class({
         this.jumpStart = this.originalPosition;
 
         this.setBoxesAlpha = (alpha) => {
-            let boxManager = this.node.parent.getComponent("BoxManager");
-            boxManager.setBoxesAlpha(alpha);
+            this.boxManager.setBoxesAlpha(alpha);
+        };
+
+        this.findNearestBox = (y, lowestBox) => {
+            return this.boxManager.findNearestBox(y, lowestBox);
         };
 
         this.calcPositionVariance = (positionList) => {
@@ -117,6 +128,9 @@ cc.Class({
     start () {
         this.positionList = [];
 
+        this.connectedBox = null;
+        this.connectedBoxLeft = false;
+
         this.events.on('property_changed', (event) => {
             let data = event.getUserData();
             if (data.property == 'state') {
@@ -134,6 +148,25 @@ cc.Class({
                         data.target.playerIcon.scaleX = - (Math.abs(data.target.playerIcon.scaleX));
                     }
                     data.target.playerDisplay.playAnimation('tiao', 1);
+                } else if (data.newValue == data.target.states.STATE_HANGING) {
+                    let connectedNode = data.target.boxManager.createConnectedNode(data.extra.box, data.extra.left);
+                    let joint;
+                    if (data.extra.left) {
+                        data.target.playerIcon.scaleX = - Math.abs(data.target.playerIcon.scaleX);
+                        joint = data.target.getComponents(cc.RevoluteJoint)[1];
+                        joint.connectedBody  = connectedNode.getComponent(cc.RigidBody);
+                        joint.connectedAnchor = new cc.Vec2( - (connectedNode.width / 2), connectedNode.height / 2);
+                        joint.apply();
+                    } else {
+                        data.target.playerIcon.scaleX = Math.abs(data.target.playerIcon.scaleX);
+                        joint = data.target.getComponents(cc.RevoluteJoint)[0];
+                        joint.connectedBody  = connectedNode.getComponent(cc.RigidBody);
+                        joint.connectedAnchor = new cc.Vec2(connectedNode.width / 2, connectedNode.height / 2);
+                        joint.apply();
+                    }
+                    data.target.connectedBox = data.extra.box;
+                    data.target.connectedBoxLeft = data.extra.left;
+                    data.target.playerDisplay.playAnimation('xuangua', 1);
                 }
             }
         });
@@ -143,6 +176,7 @@ cc.Class({
         if (this.state != state) {
             let oldState = this.state;
             this.state = state;
+            console.log('state changed from ' + oldState + ' to ' + state);
             this.events.emit('property_changed', {target: this, property: 'state', oldValue: oldState, newValue: this.state, extra: extra});
         }
     },
@@ -190,6 +224,32 @@ cc.Class({
         if (!this.isStill()) {
             return;
         }
+        if (this.connectedBox) {
+            this.node.getComponents(cc.RevoluteJoint).forEach((joint) => {
+                joint.connectedBody = null;
+                joint.connectedAnchor = new cc.Vec2(0, 0);
+                joint.apply();
+            });
+            this.boxManager.removeConnectedNode(this.connectedBox, this.connectedBoxLeft);
+            let ignorePositionX;
+            let tolerence = 3;
+            if (this.connectedBoxLeft) {
+                ignorePositionX = - this.connectedBox.width / 2;
+            } else {
+                ignorePositionX = this.connectedBox.width / 2;
+            }
+            this.node.collideSetting = {
+                target: this.connectedBox,
+                ignoreArea: new cc.size(this.hangingColliderTolerence
+                    , this.connectedBox.height + this.hangingColliderTolerence),
+                ignorePosition: new cc.Vec2(ignorePositionX, 0),
+                once: true,
+                originalGroup: this.node.group
+            };
+            this.node.group = 'hanging';
+            this.connectedBox = null;
+            this.connectedBoxLeft = false;
+        }
         this.jumpStart = this.node.position;
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
         this.setState(this.states.STATE_JUMPING, {vec: vec});
@@ -201,9 +261,29 @@ cc.Class({
             this.positionList.shift();
         }
         this.positionList.push(currentPosition);
+
+        if (this.state == this.states.STATE_JUMPING) {
+            let {box, dist} = this.findNearestBox(this.node.position.y, this.boxManager.getHighestReachedBox());
+            if (box && Math.abs(dist) <= this.grabDist.height) {
+                if (Math.abs(currentPosition.x + this.node.width / 2
+                 - box.position.x + box.width / 2) <= this.grabDist.width) {
+                    if (!this.boxManager.hasConnectedNode(box, true)) {
+                        this.setState(this.states.STATE_HANGING, {box: box, left: true});
+                    }
+                    return;
+                } else if (Math.abs(currentPosition.x - this.node.width / 2
+                 - box.position.x - box.width / 2) <= this.grabDist.width) {
+                    if (!this.boxManager.hasConnectedNode(box, false)) {
+                        this.setState(this.states.STATE_HANGING, {box: box, left: false});
+                    }
+                    return;
+                }
+            }
+        }
+
         let varianceVec = this.calcPositionVariance(this.positionList);
         if (varianceVec.x < this.tremblingVariance.x && varianceVec.y < this.tremblingVariance.y) {
-            if (!this.isForcing()) {
+            if (!this.isForcing() && this.state != this.states.STATE_HANGING) {
                 this.setState(this.states.STATE_STILL);
             }
         } else {
@@ -221,7 +301,7 @@ cc.Class({
             } else {
                 if (currentPosition.y - this.jumpStart.y < -1) {
                     this.setState(this.states.STATE_FALLING);
-                    this.node.group = 'falling'
+                    this.node.group = 'falling';
                     this.setBoxesAlpha(100);
                 }
             }
@@ -234,7 +314,9 @@ cc.Class({
     },
 
     isStill () {
-        return this.state == this.states.STATE_STILL || this.isForcing();
+        return this.state == this.states.STATE_STILL
+         || this.state == this.states.STATE_HANGING
+         || this.isForcing();
     },
 
     isFalling() {

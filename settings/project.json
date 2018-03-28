@@ -10,6 +10,7 @@
     [
       true,
       true,
+      true,
       true
     ],
     [
@@ -19,6 +20,13 @@
     [
       true,
       false,
+      true,
+      true
+    ],
+    [
+      true,
+      false,
+      true,
       true
     ]
   ],
@@ -30,7 +38,8 @@
   "group-list": [
     "default",
     "boxes",
-    "falling"
+    "falling",
+    "hanging"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {
@@ -38,6 +47,5 @@
     "width": 640
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true,
-  "start-scene": "current"
+  "use-project-simulator-setting": true
 }
