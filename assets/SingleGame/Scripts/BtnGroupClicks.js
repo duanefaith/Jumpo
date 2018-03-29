@@ -68,4 +68,8 @@ cc.Class({
         this.presentsBtn.interactable = false;
         this.btnGroup.getComponent(cc.Animation).play('btn_group_hide');
     },
+    
+    onLeaderBoardBtnClicked () {
+        cc.director.loadScene('rank_scene');
+    },
 });

@@ -167,7 +167,6 @@ cc.Class({
 
             let self = this;
             starPositions.forEach((position) => {
-                console.log(position);
                 let newStar = cc.instantiate(self.starPrefab);
                 self.node.addChild(newStar);
                 newStar.getComponent('StarControl').players.push(this.target);

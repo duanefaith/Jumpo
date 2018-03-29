@@ -54,14 +54,24 @@ module.exports.getCurrentPlayerScore = async function () {
 	return null;
 };
 
+module.exports.getPlayerScoresCount = async function () {
+	let leaderboard = await getGlobalLeaderboard();
+	if (leaderboard) {
+		let count = await leaderboard.getEntryCountAsync();
+		return count;
+	}
+	return 0;
+};
+
 module.exports.getPlayerScores = async function (count = 10, offset = 0) {
-	let scores = [];
+	let scores = {};
 	let leaderboard = await getGlobalLeaderboard();
 	if (leaderboard != null) {
 		let entries = await leaderboard.getEntriesAsync(count, offset);
 		if (entries != null && entries.length > 0) {
 			entries.forEach((entry) => {
-				scores.push(fbEntryToScoreItem(entry));
+				let scoreItem = fbEntryToScoreItem(entry);
+				scores[scoreItem.rank] = scoreItem;
 			});
 		}
 	}
