@@ -76,10 +76,16 @@ cc.Class({
         let lastLocation = null;
         this.castalNode.zIndex = this.castalNodeZIndex;
         this.node.on(cc.Node.EventType.TOUCH_START, e => {
+            if (!window.shared.gameStarted) {
+                return;
+            }
             startLocation = e.touch.getLocation();
             lastLocation = startLocation;
         });
         this.node.on(cc.Node.EventType.TOUCH_MOVE, e => {
+            if (!window.shared.gameStarted) {
+                return;
+            }
             let currentLocation = e.touch.getLocation();
             if (startLocation !== null) {
                 this.playerControl.getComponent('PlayerControl').applyForce(
@@ -88,6 +94,9 @@ cc.Class({
             lastLocation = currentLocation;
         });
         this.node.on(cc.Node.EventType.TOUCH_END, e => {
+            if (!window.shared.gameStarted) {
+                return;
+            }
             if (startLocation !== null) {
                 let currentLocation = e.touch.getLocation();
                 this.playerControl.getComponent('PlayerControl').jump(
@@ -97,6 +106,9 @@ cc.Class({
             }
         });
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, e => {
+            if (!window.shared.gameStarted) {
+                return;
+            }
             if (startLocation !== null && lastLocation != null) {
                 this.playerControl.getComponent('PlayerControl').jump(
                     new cc.Vec2(startLocation.x - lastLocation.x, startLocation.y - lastLocation.y));
@@ -144,17 +156,24 @@ cc.Class({
         this.backgrounds.push(newBackground);
 
         this.playerControl.getComponent('PlayerControl').registerGameFinishCallback(() => {
-            let finalScore = this.getComponent('BoxManager').getScore();
-            Global.updateLeaderboard(finalScore, '').then((success) => {
-                if (success) {
-                    console.log('updateLeaderboard succeed');
-                }
-                cc.director.loadScene('welcome');
-            });
+            if (window.shared.gameStarted) {
+                let finalScore = this.getComponent('BoxManager').getScore();
+                Global.updateLeaderboard(finalScore, '').then((success) => {
+                    if (success) {
+                        console.log('updateLeaderboard succeed');
+                    }
+                    setTimeout(() => {
+                         cc.director.loadScene('single_game');
+                    }, 1000);
+                });
+            }
         });
     },
 
     lateUpdate (dt) {
+        if (!window.shared.gameStarted) {
+            return;
+        }
         let topMostLeftWall = this.getTopMostNode(this.leftWalls);
         let topMostRightWall = this.getTopMostNode(this.rightWalls);
         let topMostBackground = this.getTopMostNode(this.backgrounds);

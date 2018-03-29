@@ -1,0 +1,26 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "btn_group_hide",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.25,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": -698,
+          "curve": "cubicOut"
+        },
+        {
+          "frame": 0.25,
+          "value": -1148
+        }
+      ]
+    }
+  },
+  "events": []
+}

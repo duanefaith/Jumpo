@@ -21,7 +21,7 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.focusPosition = this.focus.position;
+        this.focusPosition = null;
     },
 
     start () {
@@ -29,6 +29,12 @@ cc.Class({
     },
 
     lateUpdate (dt) {
+        if (!window.shared.gameStarted) {
+            return;
+        }
+        if (!this.focusPosition) {
+            this.focusPosition = this.focus.position;
+        }
         let newFocusPosition = this.focus.position;
         let deltaY = newFocusPosition.y - this.focusPosition.y;
         if (deltaY !== 0) {

@@ -75,9 +75,9 @@ cc.Class({
     onLoad () {
         this.boxes = [];
         this.connectNodes = {};
-        let originalPosition = this.target.position;
+        this.originalPosition = null;
         this.generateBox = () => {
-            let highestBoxTop = originalPosition.y - this.target.height / 2;
+            let highestBoxTop = this.originalPosition.y - this.target.height / 2;
             for (let box of this.boxes) {
                 let top = box.position.y + box.height / 2;
                 if (top > highestBoxTop) {
@@ -188,6 +188,12 @@ cc.Class({
     },
 
     lateUpdate (dt) {
+        if (!window.shared.gameStarted) {
+            return;
+        }
+        if (!this.originalPosition) {
+             this.originalPosition = this.target.position;
+        }
         if (this.autoCreate) {
             this.generateBox();
         }
