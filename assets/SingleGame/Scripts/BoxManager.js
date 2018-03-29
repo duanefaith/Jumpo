@@ -61,7 +61,13 @@ cc.Class({
         },
         horizontalStarDist: {
             default: 80
-        }
+        },
+        minStarX: {
+            default: -385
+        },
+        maxStarX: {
+            default: 385
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -83,9 +89,16 @@ cc.Class({
             }
 
             for (let i = 0; i < this.onceCreatedCount; i ++) {
+                let xPositionRand = Math.random();
+                if (xPositionRand < 0.1) {
+                    xPositionRand = 0;
+                } else if (xPositionRand > 0.9) {
+                    xPositionRand = 1;
+                }
+
                 let boxWidth = this.minBoxSize.width + Math.random() * (this.maxBoxSize.width - this.minBoxSize.width);
                 let boxHeight = this.minBoxSize.height + Math.random() * (this.maxBoxSize.height - this.minBoxSize.height);
-                let boxX = this.minBoxLeftX + boxWidth / 2 + Math.random() * (this.maxBoxRigthX - this.minBoxLeftX - boxWidth);
+                let boxX = this.minBoxLeftX + boxWidth / 2 + xPositionRand * (this.maxBoxRigthX - this.minBoxLeftX - boxWidth);
                 let boxY = highestBoxTop + this.minBoxYInterval + boxHeight / 2 + Math.random() * (this.maxBoxYInterval - this.minBoxYInterval);
 
                 let newBox = cc.instantiate(this.boxPrefab);
@@ -113,6 +126,9 @@ cc.Class({
             let starPositions = [];
             if (sideRand < (1 / 3)) {
                 let starX = box.position.x - box.width / 2 - this.horizontalStarDist;
+                if (starX <= this.minStarX) {
+                    return;
+                }
                 if (rands[0] <= this.createStarRatio) {
                     starPositions.push(new cc.Vec2(starX, box.position.y - box.height / 3));
                 }
@@ -135,6 +151,9 @@ cc.Class({
                 }
             } else {
                 let starX = box.position.x + box.width / 2 + this.horizontalStarDist;
+                if (starX >= this.minStarX) {
+                    return;
+                }
                 if (rands[0] <= this.createStarRatio) {
                     starPositions.push(new cc.Vec2(starX, box.position.y - box.height / 3));
                 }

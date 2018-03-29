@@ -1200,12 +1200,14 @@
       "width": 200,
       "height": 180
     },
-    "minBoxLeftX": -400,
-    "maxBoxRigthX": 406,
+    "minBoxLeftX": -415,
+    "maxBoxRigthX": 415,
     "minBoxYInterval": 400,
     "maxBoxYInterval": 450,
     "createStarRatio": 0.8,
-    "horizontalStarDist": 80
+    "horizontalStarDist": 80,
+    "minStarX": -385,
+    "maxStarX": 385
   },
   {
     "__type__": "cc.PrefabInfo",
