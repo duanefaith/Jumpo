@@ -27,6 +27,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        starPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
         camera: {
             default: null,
             type: cc.Camera
@@ -51,6 +55,12 @@ cc.Class({
         },
         maxBoxYInterval: {
             default: 260
+        },
+        createStarRatio: {
+            default: 0.5
+        },
+        horizontalStarDist: {
+            default: 80
         }
     },
 
@@ -88,16 +98,73 @@ cc.Class({
 
                 this.camera.addTarget(newBox);
                 this.boxes.push(newBox);
+                this.createStars(newBox);
 
                 highestBoxTop = boxY + boxHeight;
             }
 
             return true;
         };
+
+        this.createStars = (box) => {
+            let sideRand = Math.random();
+            let rands = [Math.random(), Math.random(), Math.random()];
+
+            let starPositions = [];
+            if (sideRand < (1 / 3)) {
+                let starX = box.position.x - box.width / 2 - this.horizontalStarDist;
+                if (rands[0] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y - box.height / 3));
+                }
+                if (rands[1] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y));
+                }
+                if (rands[2] <=  this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y + box.height / 3));
+                }
+            } else if (sideRand < (2 / 3)) {
+                let starX = box.position.x;
+                if (rands[0] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y + 5 * box.height / 6));
+                }
+                if (rands[1] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y + 7 * box.height / 6));
+                }
+                if (rands[2] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y + 9 * box.height / 6));
+                }
+            } else {
+                let starX = box.position.x + box.width / 2 + this.horizontalStarDist;
+                if (rands[0] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y - box.height / 3));
+                }
+                if (rands[1] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y));
+                }
+                if (rands[2] <= this.createStarRatio) {
+                    starPositions.push(new cc.Vec2(starX, box.position.y + box.height / 3));
+                }
+            }
+
+            let self = this;
+            starPositions.forEach((position) => {
+                console.log(position);
+                let newStar = cc.instantiate(self.starPrefab);
+                self.node.addChild(newStar);
+                newStar.getComponent('StarControl').players.push(this.target);
+                newStar.setPosition(position);
+                newStar.getComponent('StarControl').setCallback(function (star, player) {
+                    self.starScore = self.starScore + 1;
+                });
+
+                self.camera.addTarget(newStar);
+            });
+        };
     },
 
     start () {
         this.score = 0;
+        this.starScore = 0;
         this.highestReachedBox = null;
     },
 
@@ -129,7 +196,7 @@ cc.Class({
     },
 
     getScore () {
-        return this.score;
+        return this.score + this.starScore;
     },
 
     getHighestReachedBox () {

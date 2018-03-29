@@ -1183,13 +1183,16 @@
     "connectNodePrefab": {
       "__uuid__": "164298df-8d3a-4af0-a417-718de5f7d54f"
     },
+    "starPrefab": {
+      "__uuid__": "4f27bf58-f759-4be2-92ce-c366e531b6d5"
+    },
     "camera": {
       "__id__": 26
     },
     "onceCreatedCount": 1,
     "minBoxSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 166,
       "height": 144
     },
     "maxBoxSize": {
@@ -1200,7 +1203,9 @@
     "minBoxLeftX": -400,
     "maxBoxRigthX": 406,
     "minBoxYInterval": 400,
-    "maxBoxYInterval": 450
+    "maxBoxYInterval": 450,
+    "createStarRatio": 0.8,
+    "horizontalStarDist": 80
   },
   {
     "__type__": "cc.PrefabInfo",
