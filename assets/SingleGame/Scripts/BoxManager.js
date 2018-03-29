@@ -78,15 +78,25 @@ cc.Class({
         this.connectNodes = {};
         this.originalPosition = null;
         this.generateBox = () => {
-            let highestBoxTop = this.originalPosition.y - this.target.height / 2;
-            for (let box of this.boxes) {
-                let top = box.position.y + box.height / 2;
-                if (top > highestBoxTop) {
-                    highestBoxTop = top;
+            let highestBoxTop;
+            if (this.highestReachedBox) {
+                let shoudCreateNewBox = true;
+                for (let box of this.boxes) {
+                    if (box.position.y - this.highestReachedBox.y >= this.minBoxYInterval -1) {
+                        shoudCreateNewBox = false;
+                        break;
+                    }
                 }
-            }
-            if (highestBoxTop - this.target.position.y > this.onceCreatedCount * this.minBoxYInterval) {
-                return false;
+                if (!shoudCreateNewBox) {
+                    return;
+                }
+                highestBoxTop = this.highestReachedBox.position.y + this.highestReachedBox.height / 2;
+                console.log(this.highestReachedBox);
+            } else {
+                if (this.boxes.length > 0) {
+                    return;
+                }
+                highestBoxTop = this.originalPosition.y - this.target.height / 2;
             }
 
             for (let i = 0; i < this.onceCreatedCount; i ++) {
@@ -191,6 +201,7 @@ cc.Class({
                 self.stars.push(newStar);
             });
         };
+
     },
 
     start () {
@@ -221,9 +232,17 @@ cc.Class({
                 }
             }
 
-            this.score = count;
-            this.highestReachedBox = highestReachedBox;
+            this.setScore(count);
+            this.setHighestReachedBox(highestReachedBox);
         }
+    },
+
+    setScore (score) {
+        this.score = score;
+    },
+
+    setHighestReachedBox (highestReachedBox) {
+        this.highestReachedBox = highestReachedBox;
     },
 
     setBoxesAlpha (alpha) {
@@ -312,5 +331,8 @@ cc.Class({
         });
         this.boxes = [];
         this.stars = [];
+        this.score = 0;
+        this.starScore = 0;
+        this.highestReachedBox = null;
     },
 });
