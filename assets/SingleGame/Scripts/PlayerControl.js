@@ -70,6 +70,7 @@ cc.Class({
 
         this.setState(this.states.STATE_STILL);
 
+        this.jumpStart = this.node.position;
         this.originalScaleY = this.node.scaleY;
         this.getActualVec = (vec) => {
             let actualVec = vec.mul(this.impulseRatio);
@@ -95,9 +96,6 @@ cc.Class({
             this.graphicsPannel.stroke();
             return destVec;
         };
-
-        this.originalPosition = this.node.position;
-        this.jumpStart = this.originalPosition;
 
         this.setBoxesAlpha = (alpha) => {
             this.boxManager.setBoxesAlpha(alpha);
@@ -256,6 +254,12 @@ cc.Class({
     },
 
     lateUpdate (dt) {
+        if (window.shared.gameStarted) {
+            if (!this.originalPosition) {
+                this.originalPosition = this.node.position;
+            }
+        }
+        
         let currentPosition = this.node.position;
         if (this.positionList.length > this.tremblingFrames) {
             this.positionList.shift();
@@ -288,7 +292,7 @@ cc.Class({
             }
         } else {
             if (this.isFalling()) {
-                if (currentPosition.y - this.originalPosition.y <= 1) {
+                if (this.originalPosition && currentPosition.y - this.originalPosition.y <= 1) {
                     this.jumpStart = this.originalPosition;
                     this.setState(this.states.STATE_STILL);
                     this.node.group = 'default';

@@ -63,6 +63,18 @@ cc.Class({
         castalNodeZIndex: {
             default: -2
         },
+        resultPannelPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        historyBestLabel: {
+            default: null,
+            type: cc.Label
+        },
+        btnGroup: {
+            default: null,
+            type: cc.Node
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -72,6 +84,9 @@ cc.Class({
 
         cc.director.getPhysicsManager().gravity = new cc.Vec2(0, this.gravity)
 
+        this.boxManager = this.getComponent('BoxManager');
+        this.resultPannel = null;
+        this.hideResultPannel(this);
         let startLocation = null;
         let lastLocation = null;
         this.castalNode.zIndex = this.castalNodeZIndex;
@@ -134,6 +149,44 @@ cc.Class({
             }
             return topMostNode;
         };
+
+        let self = this;
+        Global.getCurrentPlayerScore().then(function(scoreItem) {
+            if (scoreItem && scoreItem.score) {
+                self.refreshHistoryScore(self, scoreItem.score);
+            }
+        }).catch(function(err) {
+            if (err) {
+                alert(JSON.stringify(err));
+            }
+        });
+        this.refreshHistoryScore(this, 0);
+    },
+
+    refreshHistoryScore (self, score) {
+        self.historyBestScore = score;
+        self.historyBestLabel.string = self.historyBestScore;
+    },
+
+    hideResultPannel (self, action = null) {
+        if (self.resultPannel) {
+            self.resultPannel.removeFromParent();
+            self.resultPannel = null;
+
+            if (action && action.intent) {
+                if (action.intent == 'restart') {
+                    self.btnGroup.getComponent('BtnGroupControl').showBtnGroup();
+                }
+            }
+        }
+    },
+
+    showResultPannel (self, result) {
+        if (!self.resultPannel) {
+            self.resultPannel = cc.instantiate(self.resultPannelPrefab);
+            self.node.addChild(self.resultPannel, 100);
+            self.resultPannel.getComponent('ResultPannelControl').initData(self, result);
+        }
     },
 
     start () {
@@ -155,17 +208,29 @@ cc.Class({
         this.camera.addTarget(newBackground);
         this.backgrounds.push(newBackground);
 
+        let self = this;
         this.playerControl.getComponent('PlayerControl').registerGameFinishCallback(() => {
             if (window.shared.gameStarted) {
-                let finalScore = this.getComponent('BoxManager').getScore();
-                Global.updateLeaderboard(finalScore, '').then((success) => {
-                    if (success) {
-                        console.log('updateLeaderboard succeed');
-                    }
-                    setTimeout(() => {
-                         cc.director.loadScene('single_game');
-                    }, 1000);
-                });
+                let finalScore = self.boxManager.getScore();
+                let historyScore = self.historyBestScore;
+                self.boxManager.destoryItems();
+                window.shared.gameStarted = false;
+                setTimeout(() => {
+                     self.showResultPannel(self, {score: finalScore, historyScore: historyScore});
+                }, 500);
+                if (finalScore > self.historyBestScore) {
+                    Global.updateLeaderboard(finalScore, '').then((success) => {
+                        if (success) {
+                            console.log('score update succeed');
+                        } else {
+                            console.log('score update failed');
+                        }
+                    }).catch(function (err) {
+                        if (err) {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                }
             }
         });
     },
@@ -209,7 +274,7 @@ cc.Class({
             }
         }
 
-        let score = this.getComponent('BoxManager').getScore();
+        let score = this.boxManager.getScore();
         this.scoreLabel.string = score;
     },
 });

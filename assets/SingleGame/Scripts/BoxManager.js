@@ -74,6 +74,7 @@ cc.Class({
 
     onLoad () {
         this.boxes = [];
+        this.stars = [];
         this.connectNodes = {};
         this.originalPosition = null;
         this.generateBox = () => {
@@ -173,9 +174,21 @@ cc.Class({
                 newStar.setPosition(position);
                 newStar.getComponent('StarControl').setCallback(function (star, player) {
                     self.starScore = self.starScore + 1;
+                    let index = -1;
+                    for (let i in self.stars) {
+                        if (self.stars[i].position.x == star.position.x
+                         && self.stars[i].position.y == star.position.y) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index >= 0) {
+                        self.stars.splice(index, 1);
+                    }
                 });
 
                 self.camera.addTarget(newStar);
+                self.stars.push(newStar);
             });
         };
     },
@@ -288,5 +301,16 @@ cc.Class({
             return true;
         }
         return false;
+    },
+
+    destoryItems () {
+        this.boxes.forEach((box) => {
+            box.removeFromParent();
+        });
+        this.stars.forEach((star) => {
+            star.removeFromParent();
+        });
+        this.boxes = [];
+        this.stars = [];
     },
 });

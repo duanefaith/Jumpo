@@ -11,18 +11,7 @@
 cc.Class({
     extends: cc.Component,
 
-    properties: {
-        btnGroup: {
-            default: null,
-            type: cc.Node
-        },
-    },
-
-    onStartGameBtnClicked () {
-        this.btnGroup.getComponent('BtnGroupControl').hideBtnGroup();
-    },
-    
-    onLeaderBoardBtnClicked () {
-        cc.director.loadScene('rank_scene');
+    onRestartBtnClicked () {
+        this.node.parent.getComponent('ResultPannelControl').closeSelf({intent: 'restart'});
     },
 });
