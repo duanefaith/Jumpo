@@ -91,7 +91,6 @@ cc.Class({
                     return;
                 }
                 highestBoxTop = this.highestReachedBox.position.y + this.highestReachedBox.height / 2;
-                console.log(this.highestReachedBox);
             } else {
                 if (this.boxes.length > 0) {
                     return;
