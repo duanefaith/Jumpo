@@ -1,9 +1,11 @@
 const EventEmitter = require('events').EventEmitter;
+const States = require('StateConstants').SOCKET;
 
 function SocketManager() {
-	this.state = SocketManager.STATE_NOT_CONNECTED;
+	this.state = States.NOT_CONNECTED;
 	this.events = new EventEmitter();
 	this.roomSocket = null;
+	this.roomExtra = {};
 	this.roomSocketTrial = 0;
 	WebSocket.prototype.sendObj = function(obj) {
 		if (obj) {
@@ -15,12 +17,6 @@ function SocketManager() {
 		}
 	};
 }
-
-SocketManager.STATE_NOT_CONNECTED = 0;
-SocketManager.STATE_CONNECTING_ROOM = 1;
-SocketManager.STATE_ROOM_CONNECTED = 2;
-SocketManager.STATE_CONNECTING_BATTLE = 3;
-SocketManager.STATE_BATTLE_CONNECTED = 4;
 
 SocketManager.prototype.getEvents = function () {
 	return this.events;
@@ -38,8 +34,8 @@ SocketManager.prototype.getState = function () {
 
 SocketManager.prototype.connectRoom = function () {
 	console.log('connecting on state ' + this.getState());
-	if (this.state === SocketManager.STATE_NOT_CONNECTED) {
-		this.setState(SocketManager.STATE_CONNECTING_ROOMs);
+	if (this.state === States.NOT_CONNECTED) {
+		this.setState(States.CONNECTING_ROOM);
 		if (this.roomSocket) {
 			this.roomSocket.close();
 		}
@@ -48,7 +44,8 @@ SocketManager.prototype.connectRoom = function () {
 		var self = this;
 		this.roomSocket.onopen = function (event) {
 			console.log('onpen');
-			self.setState(SocketManager.STATE_ROOM_CONNECTED);
+			self.roomExtra = {};
+			self.setState(States.ROOM_CONNECTED);
 			self.events.emit('room_connected');
 		};
 		this.roomSocket.onmessage = function (event) {
@@ -74,7 +71,7 @@ SocketManager.prototype.connectRoom = function () {
 		};
 		this.roomSocket.onerror = function (event) {
 			console.log('onerror');
-			self.setState(SocketManager.STATE_NOT_CONNECTED)
+			self.setState(SocketManager.States.NOT_CONNECTED)
 			if (self.roomSocketTrial <= 3) {
 				self.roomSocketTrial ++;
 				self.connectRoom();
@@ -85,7 +82,7 @@ SocketManager.prototype.connectRoom = function () {
 		};
 		this.roomSocket.onclose = function (event) {
 			console.log('onclose');
-			self.setState(SocketManager.STATE_NOT_CONNECTED)
+			self.setState(States.NOT_CONNECTED)
 			self.events.emit('room_connect_close');
 		};
 		return true;
@@ -94,7 +91,7 @@ SocketManager.prototype.connectRoom = function () {
 };
 
 SocketManager.prototype.sendToRoomSocket = function (type, data) {
-	if (this.state === SocketManager.STATE_ROOM_CONNECTED) {
+	if (this.state === States.ROOM_CONNECTED) {
 		this.roomSocket.sendObj({
 			type: type,
 			data: data
@@ -102,6 +99,18 @@ SocketManager.prototype.sendToRoomSocket = function (type, data) {
 		return true;
 	}
 	return false;
+};
+
+SocketManager.prototype.saveToRoomExtra = function (key, obj) {
+	if (key && obj) {
+		this.roomExtra[key] = obj;
+	}
+};
+
+SocketManager.prototype.getRoomExtra = function (key) {
+	if (key) {
+		return this.roomExtra[key];
+	}
 };
 
 module.exports = function () {

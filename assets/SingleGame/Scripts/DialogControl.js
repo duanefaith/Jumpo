@@ -48,6 +48,7 @@ cc.Class({
     onLoad () {
         this.hidden = true;
         this.isAnimating = false;
+        this.titleLabel.string = this.title;
         this.animation = this.dialogOuter.getComponent(cc.Animation);
         let self = this;
         this.commonPrefabs.forEach((prefab) => {

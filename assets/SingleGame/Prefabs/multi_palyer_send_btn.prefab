@@ -28,11 +28,14 @@
         "__id__": 7
       },
       {
-        "__id__": 8
+        "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": {
-      "__id__": 9
+      "__id__": 11
     },
     "_id": "",
     "_opacity": 255,
@@ -60,8 +63,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 540,
+      "y": 960
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -181,7 +184,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a3803640-dbe6-40f7-98a0-d5d47ca36ad2"
     },
     "fileId": "69wZ6tTMdPsqe1pR8sTi24",
     "sync": false
@@ -237,9 +240,13 @@
     },
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "clickEvents": [
+      {
+        "__id__": 8
+      }
+    ],
+    "_N$interactable": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -271,6 +278,15 @@
     }
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "MultiPlayerSendBtnControl",
+    "handler": "onSendBtnClicked",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -297,12 +313,24 @@
     "_originalHeight": 0
   },
   {
+    "__type__": "e51d1CA2FlLVr+AOgftYdCn",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "button": {
+      "__id__": 7
+    }
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "a3803640-dbe6-40f7-98a0-d5d47ca36ad2"
     },
     "fileId": "97lLk4/F5D8acop/rlkjOR",
     "sync": false

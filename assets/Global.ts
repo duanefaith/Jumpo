@@ -14,6 +14,38 @@ async function getGlobalLeaderboard () {
 	return leaderboard;
 }
 
+function readFile (response) {
+	return new Promise((resolve, reject) => {
+		try {
+			let reader = new FileReader();
+			reader.onload = function (event) {
+				let res = event.target.result;
+				resolve(res);
+			}
+			reader.readAsDataURL(response);
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
+function loadHttpRequest (url) {
+	return new Promise((resolve, reject) => {
+		try {
+			let xhr = new XMLHttpRequest();
+			xhr.open('GET', url, true);
+			xhr.responseType = 'blob';
+			xhr.onload = function (e) {
+				resolve(xhr.response);
+			};
+			xhr.send();
+		} catch (error) {
+			reject(error);
+		}
+		
+	});
+};
+
 function fbEntryToScoreItem (entry) {
 	if (entry == null) {
 		return null;
@@ -97,10 +129,41 @@ module.exports.postLeaderboardUpdate = async function() {
 		return false;
 	}
 	try {
-		await FBInstant.updateAsync({action: 'LEADERBOARD', name: GLOBAL_LEADERBOARD_NAME});
+		await instant.updateAsync({action: 'LEADERBOARD', name: GLOBAL_LEADERBOARD_NAME});
 		return true;
 	} catch (error) {
 		console.log(error);
 	}
 	return false;
+};
+
+module.exports.shareContent = async function (text, image, data) {
+	let instant = window.shared.getFBInstant();
+	if (instant == null) {
+		return false;
+	}
+	try {
+		await instant.shareAsync({
+			intent: 'REQUEST',
+			image: image,
+			text: text,
+			data: data
+		});
+		return true;
+	} catch (error) {
+		console.log(error);
+	}
+	return false;
+};
+
+module.exports.loadImage = async function(url) {
+	try{
+		let response = await loadHttpRequest(url);
+		if (response) {
+			let result = await readFile(response);
+			return result;
+		}
+	} catch (error) {
+		console.log(error);
+	}
 };
