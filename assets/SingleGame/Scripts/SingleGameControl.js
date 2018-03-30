@@ -217,7 +217,7 @@ cc.Class({
                 window.shared.gameStarted = false;
                 setTimeout(() => {
                      self.showResultPannel(self, {score: finalScore, historyScore: historyScore});
-                }, 500);
+                }, 200);
                 if (finalScore > self.historyBestScore) {
                     Global.updateLeaderboard(finalScore, '').then((success) => {
                         if (success) {

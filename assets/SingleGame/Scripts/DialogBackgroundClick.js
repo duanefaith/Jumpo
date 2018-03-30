@@ -12,25 +12,13 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        canvasNode: {
+        dialog: {
             default: null,
             type: cc.Node
-        },
-        btnGroup: {
-            default: null,
-            type: cc.Node
-        },
+        }
     },
 
-    onStartGameBtnClicked () {
-        this.btnGroup.getComponent('BtnGroupControl').hideBtnGroup();
-    },
-    
-    onLeaderBoardBtnClicked () {
-        cc.director.loadScene('rank_scene');
-    },
-
-    onMultiPlayerBtnClicked () {
-        this.canvasNode.getComponent('MultiPlayerHelper').showInviteDialog();
+    onBackgroundClicked () {
+        this.dialog.getComponent('DialogControl').dismiss();
     },
 });
