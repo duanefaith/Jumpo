@@ -71,7 +71,7 @@ SocketManager.prototype.connectRoom = function () {
 		};
 		this.roomSocket.onerror = function (event) {
 			console.log('onerror');
-			console.log(event);
+			console.log(event);xx
 			self.setState(States.NOT_CONNECTED)
 			if (self.roomSocketTrial <= 3) {
 				self.roomSocketTrial ++;

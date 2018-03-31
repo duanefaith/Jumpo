@@ -62,6 +62,7 @@ cc.Class({
             STATE_FORCING_HIGH: 3,
             STATE_JUMPING: 4,
             STATE_HANGING: 5,
+            STATE_HANGING_FORCING: 6,
         };
         this.events = new cc.EventTarget();
         this.body = this.getComponent(cc.RigidBody);
@@ -165,6 +166,8 @@ cc.Class({
                     data.target.connectedBox = data.extra.box;
                     data.target.connectedBoxLeft = data.extra.left;
                     data.target.playerDisplay.playAnimation('xuangua', 1);
+                } else if (data.newValue == data.target.states.STATE_HANGING_FORCING) {
+                    data.target.playerDisplay.playAnimation('xuangua2', 1);
                 }
             }
         });
@@ -206,10 +209,14 @@ cc.Class({
             }
         }
 
-        if ((finalDist / this.maxLineLength) <= 0.5) {
-            this.setState(this.states.STATE_FORCING_HIGH, {vec: vec});
+        if (this.connectedBox != null) {
+            this.setState(this.states.STATE_HANGING_FORCING, {vec: vec});
         } else {
-            this.setState(this.states.STATE_FORCING_LOW, {vec: vec});
+            if ((finalDist / this.maxLineLength) <= 0.5) {
+                this.setState(this.states.STATE_FORCING_HIGH, {vec: vec});
+            } else {
+                this.setState(this.states.STATE_FORCING_LOW, {vec: vec});
+            }
         }
     },
 
@@ -329,6 +336,7 @@ cc.Class({
 
     isForcing() {
         return this.state == this.states.STATE_FORCING_LOW 
-         || this.state == this.states.STATE_FORCING_HIGH;
+         || this.state == this.states.STATE_FORCING_HIGH
+         || this.state == this.states.STATE_HANGING_FORCING;
     },
 });
