@@ -49,7 +49,10 @@ cc.Class({
         },
         hangingColliderTolerence: {
             default: 3,
-        }
+        },
+        hangingColliderCount: {
+            default: 5,
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -71,7 +74,7 @@ cc.Class({
 
         this.setState(this.states.STATE_STILL);
 
-        this.jumpStart = this.node.position;
+        this.refreshJumpStart();
         this.originalScaleY = this.node.scaleY;
         this.getActualVec = (vec) => {
             let actualVec = vec.mul(this.impulseRatio);
@@ -248,14 +251,14 @@ cc.Class({
                 ignoreArea: new cc.size(this.hangingColliderTolerence
                     , this.connectedBox.height + this.hangingColliderTolerence),
                 ignorePosition: new cc.Vec2(ignorePositionX, 0),
-                once: true,
+                collideCount: this.hangingColliderCount,
                 originalGroup: this.node.group
             };
             this.node.group = 'hanging';
             this.connectedBox = null;
             this.connectedBoxLeft = false;
         }
-        this.jumpStart = this.node.position;
+        this.refreshJumpStart();
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
         this.setState(this.states.STATE_JUMPING, {vec: vec});
     },
@@ -300,7 +303,7 @@ cc.Class({
         } else {
             if (this.isFalling()) {
                 if (this.originalPosition && currentPosition.y - this.originalPosition.y <= 1) {
-                    this.jumpStart = this.originalPosition;
+                    this.refreshJumpStart(false);
                     this.setState(this.states.STATE_STILL);
                     this.node.group = 'default';
                     this.setBoxesAlpha(255);
@@ -318,6 +321,15 @@ cc.Class({
             }
         }
         
+    },
+
+    refreshJumpStart(useHighestBox = true) {
+        let hightestBox = this.node.parent.getComponent('BoxManager').getHighestReachedBox();
+        if (useHighestBox && hightestBox) {
+            this.jumpStart = new cc.Vec2(this.node.position.x, hightestBox.position.y - hightestBox.height / 2);
+        } else {
+            this.jumpStart = new cc.Vec2(this.node.position.x, this.node.position.y - this.node.height / 2);
+        }
     },
 
     getEvents() {

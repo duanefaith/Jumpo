@@ -52,7 +52,6 @@ cc.Class({
             let shouldDisable = true;
             if (otherCollider.node.hasOwnProperty('collideSetting')) {
                 let collideSetting = otherCollider.node.collideSetting;
-                let once = collideSetting.once;
                 let originalGroup = collideSetting.originalGroup;
                 if (collideSetting.hasOwnProperty('target')) {
                     if (collideSetting.target !== this.node) {
@@ -79,16 +78,23 @@ cc.Class({
                         }
                     }
                 }
-                if (once) {
+                let reset = () => {
                     if (originalGroup) {
                         otherCollider.node.group = originalGroup;
                         delete otherCollider.node.collideSetting;
+                    }
+                };
+                if (collideSetting.hasOwnProperty('collideCount')) {
+                    let collideCount = collideSetting.collideCount;
+                    if (collideCount <= 0) {
+                        reset();
+                    } else {
+                        collideSetting.collideCount = collideCount - 1;
+                        otherCollider.node.collideSetting = collideSetting;
                     }
                 }
             }
             contact.disabled = shouldDisable;
         }
     },
-
-    // update (dt) {},
 });
