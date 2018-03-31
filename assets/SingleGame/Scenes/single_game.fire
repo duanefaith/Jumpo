@@ -72,29 +72,26 @@
       },
       {
         "__id__": 47
-      },
-      {
-        "__id__": 92
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
+        "__id__": 92
+      },
+      {
+        "__id__": 93
+      },
+      {
+        "__id__": 94
+      },
+      {
         "__id__": 95
-      },
-      {
-        "__id__": 96
-      },
-      {
-        "__id__": 97
-      },
-      {
-        "__id__": 98
       }
     ],
     "_prefab": {
-      "__id__": 99
+      "__id__": 96
     },
     "_id": "12yGfagHNDJ7yqnCi2vsu9",
     "_opacity": 255,
@@ -3162,93 +3159,6 @@
       "__uuid__": "84a97815-8d94-41ba-81db-f0c8a506d1e9"
     },
     "fileId": "702CcjtLVDtI106A1y0Y8q",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "star_ske",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 2
-    },
-    "_children": [],
-    "_tag": -1,
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 93
-      }
-    ],
-    "_prefab": {
-      "__id__": 94
-    },
-    "_id": "ea/DNx+FlEBJlIW1ElP8Zx",
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_opacityModifyRGB": false,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "dragonBones.ArmatureDisplay",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 92
-    },
-    "_enabled": true,
-    "_armatureName": "armatureName",
-    "_animationName": "animation",
-    "playTimes": 1,
-    "_N$dragonAsset": {
-      "__uuid__": "b6e08d7f-bb26-4a10-9783-108f73932e0e"
-    },
-    "_N$dragonAtlasAsset": {
-      "__uuid__": "0982082e-776f-4492-9e76-ad8bf4b392ed"
-    },
-    "_N$_defaultArmatureIndex": 0,
-    "_N$_animationIndex": 1,
-    "_N$timeScale": 1,
-    "_N$debugBones": false
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 2
-    },
-    "asset": {
-      "__uuid__": "84a97815-8d94-41ba-81db-f0c8a506d1e9"
-    },
-    "fileId": "ea/DNx+FlEBJlIW1ElP8Zx",
     "sync": false
   },
   {

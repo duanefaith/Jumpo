@@ -1424,6 +1424,9 @@
     "failPrefab": {
       "__uuid__": "6acefe03-ac78-4a4d-8c3e-0e219775cfb9"
     },
+    "singleResultPrefab": {
+      "__uuid__": "33b3a631-c238-4bbc-a1bf-48d13d3f5e2d"
+    },
     "backgroundPannel": {
       "__id__": 2
     },

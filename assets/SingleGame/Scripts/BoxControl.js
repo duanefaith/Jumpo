@@ -15,27 +15,17 @@ cc.Class({
         ignoredColliderGroups: {
             default: [],
             type: [cc.String]
+        },
+        boxShownBone: {
+            default: null,
+            type: dragonBones.ArmatureDisplay
         }
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.boxShownBone.playAnimation('animation', 1);
         this.isPointInArea = function (point, position, size) {
             if (point && position && size) {
                 if (point.x < (position.x - size.width / 2) || point.x > (position.x + size.width / 2)) {
@@ -47,10 +37,6 @@ cc.Class({
             }
             return true;
         };
-    },
-
-    start () {
-
     },
 
     onBeginContact (contact, selfCollider, otherCollider) {

@@ -20,6 +20,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        singleResultPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
         backgroundPannel: {
             default: null,
             type: cc.Node
@@ -49,10 +53,14 @@ cc.Class({
             }
 
             let pannel;
-            if (result.score > result.historyScore) {
-                pannel = cc.instantiate(this.successPrefab);
+            if (result.multi) {
+                if (result.score > result.historyScore) {
+                    pannel = cc.instantiate(this.successPrefab);
+                } else {
+                    pannel = cc.instantiate(this.failPrefab);
+                }
             } else {
-                pannel = cc.instantiate(this.failPrefab);
+                pannel = cc.instantiate(this.singleResultPrefab);
             }
             this.node.addChild(pannel, -1);
         }
