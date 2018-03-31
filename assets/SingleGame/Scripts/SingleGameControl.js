@@ -150,17 +150,37 @@ cc.Class({
             return topMostNode;
         };
 
-        let self = this;
-        Global.getCurrentPlayerScore().then(function(scoreItem) {
-            if (scoreItem && scoreItem.score) {
-                self.refreshHistoryScore(self, scoreItem.score);
-            }
-        }).catch(function(err) {
-            if (err) {
-                alert(JSON.stringify(err));
-            }
-        });
+        this.fetchPlayerScore();
+    },
+
+    fetchPlayerScore () {
         this.refreshHistoryScore(this, 0);
+
+        let syncScore = () => {
+            let self = this;
+            Global.getCurrentPlayerScore().then(function (scoreItem) {
+                if (scoreItem && scoreItem.score) {
+                    self.refreshHistoryScore(self, scoreItem.score);
+                }
+            }).catch(function (err) {
+                if (err) {
+                    alert(JSON.stringify(err));
+                }
+            });
+        };
+
+        let currentPlayer = Global.getCurrentPlayer();
+        if (currentPlayer) {
+            syncScore();
+        } else {
+            Global.login().then(function (player) {
+                console.log(player);
+            }).catch(function (err) {
+                if (err) {
+                    alert(JSON.stringify(err));
+                }
+            });
+        }
     },
 
     refreshHistoryScore (self, score) {

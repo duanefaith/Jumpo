@@ -1,5 +1,7 @@
 const GLOBAL_LEADERBOARD_NAME = 'jump_leader_global';
 
+let currentPlayerInfo = null;
+
 async function getLeaderboard (name) {
 	let instant = window.shared.getFBInstant();
 	if (instant == null) {
@@ -65,6 +67,90 @@ function fbEntryToScoreItem (entry) {
 	return scoreItem;
 }
 
+function wxLogin() {
+	return new Promise((resolve, reject) => {
+		let instant = window.shared.getWXInstant();
+		if (!instant) {
+			resolve(null);
+		} else {
+			instant.login({
+				success: function (res) {
+					resolve(res.code);
+				},
+				fail: function (res) {
+					reject(res);
+				}
+			});
+		}
+	});
+}
+
+function fetchOpenId(code) {
+	return new Promise((resolve, reject) => {
+		let instant = window.shared.getWXInstant();
+		if (!instant) {
+			resolve(null);
+		} else {
+			let xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 206)) {
+					let response = JSON.parse(xhr.responseText);
+					if (response.error) {
+						alert(JSON.stringify(response.error));
+						resolve(null);
+					} else {
+						let player = {
+							id: response.user.id
+						};
+						resolve(player);
+					}
+				}
+			};
+			xhr.open('POST', window.shared.getOptions().loginHost + '/users/login', true);
+			xhr.responseType = 'text';
+			xhr.send({code: code});
+		}
+	});
+}
+
+function getUserInfo() {
+	return new Promise((resolve, reject) => {
+		let instant = window.shared.getWXInstant();
+		if (!instant) {
+			resolve(null);
+		} else {
+			instant.getUserInfo({
+				success: function (res) {
+					resolve(res.userInfo);
+				},
+				fail: function (res) {
+					reject(res);
+				}
+			});
+		}
+	});
+}
+
+module.exports.login = async function () {
+	let instant = window.shared.getWXInstant();
+	if (instant) {
+		let code = await wxLogin();
+		if (code) {
+			let player = await fetchOpenId(code);
+			if (player) {
+				let userInfo = await getUserInfo();
+				if (userInfo) {
+					player.name = userInfo.nickName;
+					player.photo = userInfo.avatarUrl;
+				}
+				currentPlayerInfo = player;
+				return currentPlayerInfo;
+			}
+		}
+	}
+	return null;
+};
+
 module.exports.getCurrentPlayer = function () {
 	let instant = window.shared.getFBInstant();
 	if (instant) {
@@ -73,8 +159,9 @@ module.exports.getCurrentPlayer = function () {
 			name: instant.player.getName(),
 			photo: instant.player.getPhoto(),
 		};
+	} else {
+		return currentPlayerInfo;
 	}
-	return null;
 };
 
 module.exports.getCurrentPlayerScore = async function () {
