@@ -648,9 +648,9 @@
       "__id__": 11
     },
     "_enabled": true,
-    "impulseRatio": 120,
-    "maxImpluseX": 48000,
-    "maxImpluseY": 48000,
+    "impulseRatio": 10,
+    "maxImpluseX": 4000,
+    "maxImpluseY": 4000,
     "maxLineLength": 800,
     "dashGap": 15,
     "minScaleRatio": 1,
