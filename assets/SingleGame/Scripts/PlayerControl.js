@@ -261,6 +261,7 @@ cc.Class({
         this.refreshJumpStart();
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
         this.setState(this.states.STATE_JUMPING, {vec: vec});
+        this.getComponent(cc.AudioSource).play();
     },
 
     lateUpdate (dt) {
