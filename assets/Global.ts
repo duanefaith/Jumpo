@@ -211,7 +211,7 @@ async function getPlayerScoresFromServer(start, count) {
 	return result;
 }
 
-function getUserInfo() {
+function getUserInfo () {
 	return new Promise((resolve, reject) => {
 		let instant = window.shared.getWXInstant();
 		if (!instant) {
@@ -224,6 +224,27 @@ function getUserInfo() {
 				fail: function (res) {
 					reject(res);
 				}
+			});
+		}
+	});
+}
+
+function shareAppMsg (title, imagePath, query) {
+	return new Promise((resolve, reject) => {
+		let instant = window.shared.getWXInstant();
+		if (!instant) {
+			resolve(null);
+		} else {
+			instant.shareAppMessage({
+				title: title,
+				imageUrl: imagePath,
+				query: query,
+				success: function () {
+					resolve(true);
+				},
+				fail: function () {
+					resolve(false);
+				},
 			});
 		}
 	});
@@ -331,21 +352,35 @@ module.exports.postLeaderboardUpdate = async function() {
 	return false;
 };
 
-module.exports.shareContent = async function (text, image, data) {
+module.exports.shareContent = async function (text, imagePath, data) {
 	let instant = window.shared.getFBInstant();
-	if (instant == null) {
-		return false;
-	}
-	try {
-		await instant.shareAsync({
-			intent: 'REQUEST',
-			image: image,
-			text: text,
-			data: data
-		});
-		return true;
-	} catch (error) {
-		console.log(error);
+	if (instant) {
+		try {
+			let data = await module.exports.loadImage(imagePath);
+			await instant.shareAsync({
+				intent: 'REQUEST',
+				image: data,
+				text: text,
+				data: data
+			});
+			return true;
+		} catch (error) {
+			console.log(error);
+		}
+	} else if (window.shared.getWXInstant()) {
+		let query;
+		if (data) {
+			query = '';
+			let keys = Object.keys(data);
+			for (var i = 0; i < keys.length; i ++) {
+				if (i > 0) {
+					query = query + '&';
+				}
+				query = query + keys[i] + '=' + data[keys[i]];
+			}
+		}
+		let result = await shareAppMsg(text, imagePath, query);
+		return result;
 	}
 	return false;
 };

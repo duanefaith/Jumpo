@@ -28,6 +28,10 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        btnGroupScriptNode: {
+            default: null,
+            type: cc.Node
+        },
         scoreLabel: {
             default: null,
             type: cc.Label
@@ -47,6 +51,7 @@ cc.Class({
         if (result) {
             if (result.score) {
                 this.scoreLabel.string = result.score;
+                this.btnGroupScriptNode.getComponent('ResultBtnsControl').setScore(result.score);
             }
             if (result.historyScore) {
                 this.historyLabel.string = result.historyScore;

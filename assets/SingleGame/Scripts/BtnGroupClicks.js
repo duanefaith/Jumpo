@@ -8,6 +8,8 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
+const Global = require('Global');
+
 cc.Class({
     extends: cc.Component,
 
@@ -30,7 +32,16 @@ cc.Class({
         cc.director.loadScene('rank_scene');
     },
 
+    onShareBtnClicked () {
+        let player = Global.getCurrentPlayer();
+        Global.shareContent(player.name + '也在玩Jumpo哦！', './res/raw-assets/SingleGame/Textures/share.png', {
+            type: 'invite',
+            player: player.id
+        });
+    },
+
     onMultiPlayerBtnClicked () {
         this.canvasNode.getComponent('MultiPlayerHelper').showInviteDialog();
     },
+
 });

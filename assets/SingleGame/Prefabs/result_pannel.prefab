@@ -34,14 +34,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 44
+        "__id__": 45
       },
       {
-        "__id__": 45
+        "__id__": 46
       }
     ],
     "_prefab": {
-      "__id__": 46
+      "__id__": 47
     },
     "_id": "",
     "_opacity": 255,
@@ -707,21 +707,21 @@
         "__id__": 24
       },
       {
-        "__id__": 32
+        "__id__": 33
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 41
+        "__id__": 42
       },
       {
-        "__id__": 42
+        "__id__": 43
       }
     ],
     "_prefab": {
-      "__id__": 43
+      "__id__": 44
     },
     "_id": "",
     "_opacity": 255,
@@ -782,7 +782,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 31
+      "__id__": 32
     },
     "_id": "",
     "_opacity": 255,
@@ -987,7 +987,11 @@
     },
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 31
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
@@ -1021,6 +1025,15 @@
     }
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 20
+    },
+    "component": "ResultBtnsControl",
+    "handler": "onShareBtnClicked",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -1040,21 +1053,21 @@
     },
     "_children": [
       {
-        "__id__": 33
+        "__id__": 34
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 37
+        "__id__": 38
       },
       {
-        "__id__": 38
+        "__id__": 39
       }
     ],
     "_prefab": {
-      "__id__": 40
+      "__id__": 41
     },
     "_id": "",
     "_opacity": 255,
@@ -1097,21 +1110,21 @@
     "_name": "restart_btn_text",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 32
+      "__id__": 33
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 35
       },
       {
-        "__id__": 35
+        "__id__": 36
       }
     ],
     "_prefab": {
-      "__id__": 36
+      "__id__": 37
     },
     "_id": "",
     "_opacity": 255,
@@ -1154,7 +1167,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 34
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -1176,7 +1189,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 34
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -1213,7 +1226,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 33
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -1239,7 +1252,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 33
     },
     "_enabled": true,
     "transition": 2,
@@ -1261,7 +1274,7 @@
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 39
+        "__id__": 40
       }
     ],
     "_N$interactable": true,
@@ -1293,7 +1306,7 @@
     "hoverSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 32
+      "__id__": 33
     }
   },
   {
@@ -1429,6 +1442,9 @@
     },
     "backgroundPannel": {
       "__id__": 2
+    },
+    "btnGroupScriptNode": {
+      "__id__": 20
     },
     "scoreLabel": {
       "__id__": 7

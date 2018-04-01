@@ -78,14 +78,10 @@ cc.Class({
     onSendBtnClicked () {
          let roomId = SocketManager.getInstance().getRoomExtra('room_id');
          if (roomId) {
-            Global.loadImage('res/raw-assets/SingleGame/Textures/box.png').then(function (data) {
-                let player = Global.getCurrentPlayer();
-                Global.shareContent(player.name + '邀请你参加一场战斗！', data, {
-                    type: 'battle_request',
-                    data: {
-                        roomId: roomId
-                    }
-                });
+            let player = Global.getCurrentPlayer();
+            Global.shareContent(player.name + '邀请你来Jumpo参加一场战斗！', './res/raw-assets/SingleGame/Textures/share.png', {
+                type: 'battle_request',
+                roomId: roomId
             });
          } else {
             alert('创建房间失败！');
