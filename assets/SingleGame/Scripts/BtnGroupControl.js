@@ -80,6 +80,7 @@ cc.Class({
                 self.isAnimating = false;
                 self.btnGroupHidden = true;
                 window.shared.gameStarted = true;
+                window.shared.events.emit('game_started');
             }
         });
         this.startGameBtn.interactable = false;

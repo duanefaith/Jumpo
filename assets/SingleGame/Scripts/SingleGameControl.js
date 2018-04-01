@@ -25,6 +25,10 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        logoNode: {
+            default: null,
+            type: cc.Node
+        },
         camera: {
             default: null,
             type: cc.Camera
@@ -129,6 +133,16 @@ cc.Class({
                     new cc.Vec2(startLocation.x - lastLocation.x, startLocation.y - lastLocation.y));
                 startLocation = null;
                 lastLocation = null;
+            }
+        });
+
+        window.shared.events.on('game_started', (event) => {
+            if (this.logoNode) {
+                this.logoNode.getComponent(cc.Animation).once('stop', () => {
+                    this.logoNode.removeFromParent();
+                    this.logoNode = null;
+                });
+                this.logoNode.getComponent(cc.Animation).play('logo_dismiss');
             }
         });
 

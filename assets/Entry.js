@@ -36,4 +36,6 @@ window.shared.getOptions = function () {
 	return window.shared.options;
 };
 
+window.shared.events = new cc.EventTarget();
+
 cc.director.getPhysicsManager().enabled = true;

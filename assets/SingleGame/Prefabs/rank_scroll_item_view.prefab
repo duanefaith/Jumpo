@@ -194,10 +194,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 2
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "6d6ce331-de6d-4ee9-a96d-fba5f39e4d84"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "88euvO+ytDA48ZAGNiWSpQ",
     "sync": false
@@ -310,10 +310,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 6
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "f30ef6ae-7c3e-40a6-a5a0-9dcc1fd17033"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "6dmEdtHRRABqkjMW3kk375",
     "sync": false
@@ -506,7 +506,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "8cdb44ac-a3f6-449f-b354-7cd48cf84061"
+      "__uuid__": "861b7b0e-ce4a-4b5e-9da0-092808770eea"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -552,10 +552,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 10
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "80404c4c-a531-4276-a940-109e992ebb85"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "56OnXsbdtL0Y0yxfkHSbH5",
     "sync": false
@@ -605,10 +605,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 10
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "80404c4c-a531-4276-a940-109e992ebb85"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "67j2qtfOdHS6mfX81W/Yex",
     "sync": false
@@ -668,10 +668,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 10
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "80404c4c-a531-4276-a940-109e992ebb85"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "12eRQ8lE9A1K4M4Qa5a0ij",
     "sync": false
@@ -784,10 +784,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 22
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "72053532-9b8c-44e6-9f04-35d2bcb7ec77"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "f0AQmIJQRNpIKLkij0IbTU",
     "sync": false
@@ -900,10 +900,10 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 26
+      "__id__": 1
     },
     "asset": {
-      "__uuid__": "af0e90bf-01d9-416a-9dab-e2b095d9fc68"
+      "__uuid__": "47db9b83-7976-4351-b2aa-6a067c45aab1"
     },
     "fileId": "eeUoxe6nFFZYqODUjhNg8V",
     "sync": false
