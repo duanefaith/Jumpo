@@ -58,15 +58,19 @@ cc.Class({
                 }
                 if (scoreItem.player.photo) {
                     let self = this;
-                    cc.loader.load(scoreItem.player.photo, function (err, texture) {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
-                        if (texture) {
-                            self.rankPlayerThumb.spriteFrame = new cc.SpriteFrame(texture);
-                        }
-                    });
+                    try {
+                        cc.loader.load(scoreItem.player.photo, function (err, texture) {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            if (texture) {
+                                self.rankPlayerThumb.spriteFrame = new cc.SpriteFrame(texture);
+                            }
+                        });
+                    } catch (error) {
+                         console.log(error);
+                    }
                 }
             }
         }

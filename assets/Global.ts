@@ -1,4 +1,5 @@
 const GLOBAL_LEADERBOARD_NAME = 'jump_leader_global';
+const LEADERBOARD_SCORE_KEY = 'leaderboard.key';
 
 let currentPlayerInfo = null;
 
@@ -57,6 +58,7 @@ function fbEntryToScoreItem (entry) {
 		rank: entry.getRank(),
 		player: {
 			id: entry.getPlayer().getID(),
+			type: 'fb',
 			name: entry.getPlayer().getName(),
 			photo: entry.getPlayer().getPhoto()
 		}
@@ -65,6 +67,25 @@ function fbEntryToScoreItem (entry) {
 		scoreItem.ext = entry.getExtraData();
 	}
 	return scoreItem;
+}
+
+function scoreItemFromKVArray (kvArray) {
+	if (kvArray && kvArray.length > 0) {
+		let score = 0;
+		for (let kv of kvArray) {
+			if (kv && kv.key == LEADERBOARD_SCORE_KEY) {
+				score = parseInt(kv.value);
+				break;
+			}
+		}
+		let scoreItem = {score: score};
+		let currentPlayer = module.exports.getCurrentPlayer();
+		if (currentPlayer) {
+			scoreItem.player = currentPlayer;
+		}
+		return scoreItem;
+	}
+	return null;
 }
 
 function wxLogin() {
@@ -85,32 +106,109 @@ function wxLogin() {
 	});
 }
 
-function fetchOpenId(code) {
+function postRequestInUrl(url, obj) {
 	return new Promise((resolve, reject) => {
 		let instant = window.shared.getWXInstant();
 		if (!instant) {
-			resolve(null);
-		} else {
-			let xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function () {
-				if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 206)) {
-					let response = JSON.parse(xhr.responseText);
-					if (response.error) {
-						alert(JSON.stringify(response.error));
-						resolve(null);
-					} else {
-						let player = {
-							id: response.user.id
-						};
-						resolve(player);
-					}
-				}
-			};
-			xhr.open('POST', window.shared.getOptions().loginHost + '/users/login', true);
-			xhr.responseType = 'text';
-			xhr.send({code: code});
+			return null;
 		}
+		instant.request({
+			url: url,
+			data: obj,
+			method: 'POST',
+			success: function (res) {
+				if (res.statusCode == 200 || res.statusCode == 206) {
+					resolve(res.data);
+				} else {
+					reject(res.statusCode);
+				}
+			},
+			fail: function (res) {
+				reject(res);
+			},
+		});
+		// let xhr = new XMLHttpRequest();
+		// xhr.onreadystatechange = function () {
+		// 	if (xhr.readyState == 4) {
+		// 		if (xhr.status == 200 || xhr.status == 206) {
+		// 			resolve(xhr.response);
+		// 		} else {
+		// 			reject(xhr.status);
+		// 		}
+		// 	}
+		// };
+		// xhr.open('POST', url, true);
+		// xhr.responseType = 'json';
+		// xhr.send(obj);
 	});
+}
+
+function postRequestInPath(path, obj) {
+	return postRequestInUrl(window.shared.getOptions().loginHost + path, obj);
+}
+
+async function fetchOpenId(code) {
+	let instant = window.shared.getWXInstant();
+	if (!instant) {
+		return null;
+	}
+	let response = await postRequestInPath('/users/login', {code: code});
+	if (response.error) {
+		alert(JSON.stringify(response.error));
+		return null;
+	} else {
+		let player = {
+			id: response.user.id,
+			type: 'wx',
+		};
+		return player;
+	}
+}
+
+async function getCurrentScoreItemFromServer() {
+	if (currentPlayerInfo) {
+		let response = await postRequestInPath('/users/score/query_me', {player: currentPlayerInfo});
+		return response;
+	} else {
+		return null;
+	}
+}
+
+async function saveScoreToServer(score) {
+	if (currentPlayerInfo) {
+		let response = await postRequestInPath('/users/score/update', {score: score, player: currentPlayerInfo});
+		if (response.error) {
+			alert(JSON.stringify(response.error));
+			return null;
+		} 
+		return response;
+	} else {
+		return null;
+	}
+}
+
+async function getPlayerScoresCountFromServer() {
+	let response = await postRequestInPath('/users/score/query_count', {});
+	if (response.error) {
+		alert(JSON.stringify(response.error));
+		return 0;
+	}
+	return response.count;
+}
+
+async function getPlayerScoresFromServer(start, count) {
+	let response = await postRequestInPath('/users/score/query_page', {start: start, count: count});
+	if (response.error) {
+		alert(JSON.stringify(response.error));
+		return null;
+	}
+	let result = {};
+	if (response.data && response.data.length > 0) {
+		response.data.forEach(function (scoreItem) {
+			result[scoreItem.rank] = scoreItem;
+		});
+	}
+	return result;
 }
 
 function getUserInfo() {
@@ -141,7 +239,7 @@ module.exports.login = async function () {
 				let userInfo = await getUserInfo();
 				if (userInfo) {
 					player.name = userInfo.nickName;
-					player.photo = userInfo.avatarUrl;
+					player.photo = userInfo.avatarUrl + '?aaa=aa.jpg';
 				}
 				currentPlayerInfo = player;
 				return currentPlayerInfo;
@@ -156,6 +254,7 @@ module.exports.getCurrentPlayer = function () {
 	if (instant) {
 		return {
 			id: instant.player.getID(),
+			type: 'fb',
 			name: instant.player.getName(),
 			photo: instant.player.getPhoto(),
 		};
@@ -170,7 +269,8 @@ module.exports.getCurrentPlayerScore = async function () {
 		let entry = await leaderboard.getPlayerEntryAsync();
 		return fbEntryToScoreItem(entry);
 	}
-	return null;
+	let scoreItem = await getCurrentScoreItemFromServer();
+	return scoreItem;
 };
 
 module.exports.getPlayerScoresCount = async function () {
@@ -179,7 +279,8 @@ module.exports.getPlayerScoresCount = async function () {
 		let count = await leaderboard.getEntryCountAsync();
 		return count;
 	}
-	return 0;
+	let count = await getPlayerScoresCountFromServer();
+	return count;
 };
 
 module.exports.getPlayerScores = async function (count = 10, offset = 0) {
@@ -193,6 +294,8 @@ module.exports.getPlayerScores = async function (count = 10, offset = 0) {
 				scores[scoreItem.rank] = scoreItem;
 			});
 		}
+	} else {
+		scores = await getPlayerScoresFromServer(offset, count);
 	}
 	return scores;
 };
@@ -202,12 +305,16 @@ module.exports.updateLeaderboard = async function (score, ext) {
 	if (leaderboard != null) {
 		try {
 			let entry = await leaderboard.setScoreAsync(score, ext);
-			return fbEntryToScoreItem(entry);
+			if (entry) {
+				return fbEntryToScoreItem(entry);
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	}
-	return null;
+
+	let scoreItem = await saveScoreToServer(score);
+	return scoreItem;
 };
 
 module.exports.postLeaderboardUpdate = async function() {

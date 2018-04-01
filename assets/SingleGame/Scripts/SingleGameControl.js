@@ -155,7 +155,6 @@ cc.Class({
 
     fetchPlayerScore () {
         this.refreshHistoryScore(this, 0);
-
         let syncScore = () => {
             let self = this;
             Global.getCurrentPlayerScore().then(function (scoreItem) {
@@ -164,22 +163,25 @@ cc.Class({
                 }
             }).catch(function (err) {
                 if (err) {
+                    console.log(err);
                     alert(JSON.stringify(err));
                 }
             });
         };
 
         let currentPlayer = Global.getCurrentPlayer();
-        if (currentPlayer) {
-            syncScore();
-        } else {
+        if (!currentPlayer) {
             Global.login().then(function (player) {
                 console.log(player);
+                syncScore();
             }).catch(function (err) {
+                console.log(err);
                 if (err) {
                     alert(JSON.stringify(err));
                 }
             });
+        } else {
+            syncScore();
         }
     },
 
@@ -239,14 +241,16 @@ cc.Class({
                      self.showResultPannel(self, {score: finalScore, historyScore: historyScore});
                 }, 200);
                 if (finalScore > self.historyBestScore) {
-                    Global.updateLeaderboard(finalScore, '').then((success) => {
-                        if (success) {
+                    Global.updateLeaderboard(finalScore, '').then((scoreItem) => {
+                        if (scoreItem) {
+                            self.refreshHistoryScore(self, scoreItem.score);
                             console.log('score update succeed');
                         } else {
                             console.log('score update failed');
                         }
                     }).catch(function (err) {
                         if (err) {
+                            console.log(err);
                             alert(JSON.stringify(err));
                         }
                     });

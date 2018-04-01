@@ -29,8 +29,8 @@ if (window.shared.getWXInstant()) {
 }
 
 window.shared.options = {};
-window.shared.options.roomHost = 'wss://xyx.lilithgame.com:10010';
-window.shared.options.loginHost = 'https://xyx1.lilithgame.com';
+window.shared.options.roomHost = 'wss://xyx11.lilithgame.com';
+window.shared.options.loginHost = 'https://xyx10.lilithgame.com';
 
 window.shared.getOptions = function () {
 	return window.shared.options;
