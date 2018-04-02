@@ -2724,7 +2724,7 @@
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [],
-    "_N$interactable": true,
+    "_N$interactable": false,
     "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -3110,7 +3110,7 @@
         "__id__": 90
       }
     ],
-    "_N$interactable": true,
+    "_N$interactable": false,
     "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -3551,9 +3551,6 @@
     },
     "joinPrefab": {
       "__uuid__": "5ea8145c-4352-4676-bb2c-df96265e547e"
-    },
-    "joinControlPrefab": {
-      "__uuid__": "9bab3c41-d2de-462b-8d4c-a318cdc8e980"
     }
   },
   {

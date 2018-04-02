@@ -52,8 +52,8 @@ cc.Class({
         this.startGameBtn.interactable = false;
         this.leaderBoardBtn.interactable = false;
         this.shareBtn.interactable = false;
-        this.presentsBtn.interactable = false;
-        this.multiPlayerBtn.interactable = false;
+        // this.presentsBtn.interactable = false;
+        // this.multiPlayerBtn.interactable = false;
         var self = this;
         this.btnGroup.getComponent(cc.Animation).once('stop', function(e) {
             if (e.getUserData().clip.name == 'btn_group_show') {
@@ -62,8 +62,8 @@ cc.Class({
                 self.startGameBtn.interactable = true;
                 self.leaderBoardBtn.interactable = true;
                 self.shareBtn.interactable = true;
-                self.presentsBtn.interactable = true;
-                self.multiPlayerBtn.interactable = true;
+                // self.presentsBtn.interactable = true;
+                // self.multiPlayerBtn.interactable = true;
             }
         });
         this.isAnimating = true;
@@ -86,8 +86,8 @@ cc.Class({
         this.startGameBtn.interactable = false;
         this.leaderBoardBtn.interactable = false;
         this.shareBtn.interactable = false;
-        this.presentsBtn.interactable = false;
-        this.multiPlayerBtn.interactable = false;
+        // this.presentsBtn.interactable = false;
+        // this.multiPlayerBtn.interactable = false;
         this.isAnimating = true;
         this.btnGroup.getComponent(cc.Animation).play('btn_group_hide');
     },
