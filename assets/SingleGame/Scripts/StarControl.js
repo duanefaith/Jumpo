@@ -57,6 +57,7 @@ cc.Class({
                 this.getComponent(cc.Animation).on('stop', function() {
                     self.node.removeFromParent();
                 });
+                this.getComponent(cc.AudioSource).play();
                 this.getComponent(cc.Animation).play('star_dismiss');
             }
         }

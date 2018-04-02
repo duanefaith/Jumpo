@@ -249,6 +249,9 @@
       "falling",
       "hanging"
     ],
+    "starBurstPrefab": {
+      "__uuid__": "f1c45e6e-cb2e-4e63-97ce-5fda3a8502d7"
+    },
     "boxShownBone": {
       "__id__": 3
     }

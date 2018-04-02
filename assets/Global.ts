@@ -349,6 +349,16 @@ module.exports.updateLeaderboard = async function (score, ext) {
 	}
 
 	let scoreItem = await saveScoreToServer(score);
+	if (currentPlayerInfo && currentPlayerInfo.type == 'web') {
+		if (scoreItem && scoreItem.player) {
+			if (scoreItem.player.name) {
+				currentPlayerInfo.name = scoreItem.player.name;
+			}
+			if (scoreItem.player.photo) {
+				currentPlayerInfo.photo = scoreItem.player.photo;
+			}
+		}
+	}
 	return scoreItem;
 };
 
@@ -395,6 +405,8 @@ module.exports.shareContent = async function (text, imagePath, data) {
 		}
 		let result = await shareAppMsg(text, imagePath, query);
 		return result;
+	} else {
+		alert('网页版本暂不支持分享，如想体验请联系开发者使用FB/微信版本！');
 	}
 	return false;
 };

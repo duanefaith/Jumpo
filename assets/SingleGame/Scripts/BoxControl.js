@@ -16,6 +16,10 @@ cc.Class({
             default: [],
             type: [cc.String]
         },
+        starBurstPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
         boxShownBone: {
             default: null,
             type: dragonBones.ArmatureDisplay
@@ -95,6 +99,33 @@ cc.Class({
                 }
             }
             contact.disabled = shouldDisable;
+        }
+
+        if (!contact.disabled) {
+            let colliderInBottom = true;
+            let points = contact.getWorldManifold().points;
+            let bottomMid = new cc.Vec2(0, - this.node.height / 2);
+            let bottomArea = new cc.size(this.node.width + 3, 3);
+            if (points.length > 0) {
+                for (let point of points) {
+                    if (!this.isPointInArea(this.node.convertToNodeSpaceAR(point)
+                        , bottomMid, bottomArea)) {
+                        colliderInBottom = false;
+                        break;
+                    }
+                }
+                if (colliderInBottom) {
+                    let localPoint = this.node.convertToNodeSpaceAR(points[0]);
+                    let starBurst = cc.instantiate(this.starBurstPrefab);
+                    this.node.addChild(starBurst, 50);
+                    starBurst.setPosition(localPoint);
+                    starBurst.getComponent(dragonBones.ArmatureDisplay).addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                        starBurst.getComponent(dragonBones.ArmatureDisplay).removeEventListener(dragonBones.EventObject.COMPLETE);
+                        starBurst.removeFromParent();
+                    });
+                    starBurst.getComponent(dragonBones.ArmatureDisplay).playAnimation('animation', 1);
+                }
+            }
         }
     },
 });

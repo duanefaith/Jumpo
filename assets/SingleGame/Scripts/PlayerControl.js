@@ -66,6 +66,8 @@ cc.Class({
             STATE_JUMPING: 4,
             STATE_HANGING: 5,
             STATE_HANGING_FORCING: 6,
+            STATE_STILL_1: 7,
+            STATE_STILL_2: 8,
         };
         this.events = new cc.EventTarget();
         this.body = this.getComponent(cc.RigidBody);
@@ -125,6 +127,8 @@ cc.Class({
         }
 
         this.gameFinishCallback = null;
+
+        this.stillInterval = 0;
     },
 
     start () {
@@ -171,7 +175,21 @@ cc.Class({
                     data.target.playerDisplay.playAnimation('xuangua', 1);
                 } else if (data.newValue == data.target.states.STATE_HANGING_FORCING) {
                     data.target.playerDisplay.playAnimation('xuangua2', 1);
-                }
+                } else if (data.newValue == data.target.states.STATE_STILL_1) {
+                    data.target.playerDisplay.playAnimation('idle2', 2);
+                    data.target.getComponents(cc.AudioSource)[1].play();
+                    data.target.playerDisplay.addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                        data.target.setState(data.target.states.STATE_STILL);
+                        data.target.playerDisplay.removeEventListener(dragonBones.EventObject.COMPLETE);
+                    });
+                } else if (data.newValue == data.target.states.STATE_STILL_2) {
+                    data.target.playerDisplay.playAnimation('idle3', 2);
+                    data.target.getComponents(cc.AudioSource)[1].play();
+                    data.target.playerDisplay.addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                        data.target.setState(data.target.states.STATE_STILL);
+                        data.target.playerDisplay.removeEventListener(dragonBones.EventObject.COMPLETE);
+                    });
+                } 
             }
         });
     },
@@ -261,10 +279,27 @@ cc.Class({
         this.refreshJumpStart();
         this.body.applyLinearImpulse(this.getActualVec(vec), this.body.getWorldCenter(), true);
         this.setState(this.states.STATE_JUMPING, {vec: vec});
-        this.getComponent(cc.AudioSource).play();
+        this.getComponents(cc.AudioSource)[0].play();
     },
 
     lateUpdate (dt) {
+        if (this.state == this.states.STATE_STILL) {
+            this.stillInterval = this.stillInterval + dt;
+            if (this.stillInterval > 5) {
+                let rand = Math.random();
+                if (rand <= (1 / 3)) {
+                    // do nothing
+                } else if (rand <= (2 / 3)) {
+                    this.setState(this.states.STATE_STILL_1);
+                } else {
+                    this.setState(this.states.STATE_STILL_2);
+                }
+                this.stillInterval = 0;
+            }
+        } else {
+            this.stillInterval = 0;
+        }
+
         if (window.shared.gameStarted) {
             if (!this.originalPosition) {
                 this.originalPosition = this.node.position;
@@ -298,7 +333,7 @@ cc.Class({
 
         let varianceVec = this.calcPositionVariance(this.positionList);
         if (varianceVec.x < this.tremblingVariance.x && varianceVec.y < this.tremblingVariance.y) {
-            if (!this.isForcing() && this.state != this.states.STATE_HANGING) {
+            if (!this.isForcing() && !this.isStill()) {
                 this.setState(this.states.STATE_STILL);
             }
         } else {
@@ -317,6 +352,7 @@ cc.Class({
                 if (currentPosition.y - this.jumpStart.y + this.node.height < 0) {
                     this.setState(this.states.STATE_FALLING);
                     this.node.group = 'falling';
+                    delete this.node.collideSetting;
                     this.setBoxesAlpha(100);
                 }
             }
@@ -339,6 +375,8 @@ cc.Class({
 
     isStill () {
         return this.state == this.states.STATE_STILL
+         || this.state == this.states.STATE_STILL_1
+         || this.state == this.states.STATE_STILL_2
          || this.state == this.states.STATE_HANGING
          || this.isForcing();
     },

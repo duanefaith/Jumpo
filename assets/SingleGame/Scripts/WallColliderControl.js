@@ -29,10 +29,11 @@ cc.Class({
             let starBurst = cc.instantiate(this.starBurstPrefab);
             this.node.addChild(starBurst, 50);
             starBurst.setPosition(localPoint.addSelf(this.offset));
-            starBurst.getComponent(dragonBones.ArmatureDisplay).playAnimation('animation', 1);
-            setTimeout(() => {
+            starBurst.getComponent(dragonBones.ArmatureDisplay).addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                starBurst.getComponent(dragonBones.ArmatureDisplay).removeEventListener(dragonBones.EventObject.COMPLETE);
                 starBurst.removeFromParent();
-            }, 830);
+            });
+            starBurst.getComponent(dragonBones.ArmatureDisplay).playAnimation('animation', 1);
         }
     },
 });
