@@ -3,6 +3,16 @@ const LEADERBOARD_SCORE_KEY = 'leaderboard.key';
 
 let currentPlayerInfo = null;
 
+if (!window.shared.isThirdParty()) {
+	(new Fingerprint2()).get(function(result, components){
+		currentPlayerInfo = {
+			id: result,
+			type: 'web'
+		};
+		console.log(currentPlayerInfo);
+	});
+}
+
 async function getLeaderboard (name) {
 	let instant = window.shared.getFBInstant();
 	if (instant == null) {
@@ -109,37 +119,40 @@ function wxLogin() {
 function postRequestInUrl(url, obj) {
 	return new Promise((resolve, reject) => {
 		let instant = window.shared.getWXInstant();
-		if (!instant) {
-			return null;
-		}
-		instant.request({
-			url: url,
-			data: obj,
-			method: 'POST',
-			success: function (res) {
-				if (res.statusCode == 200 || res.statusCode == 206) {
-					resolve(res.data);
+		if (instant) {
+			instant.request({
+				url: url,
+				data: obj,
+				method: 'POST',
+				success: function (res) {
+					if (res.statusCode == 200 || res.statusCode == 206) {
+						resolve(res.data);
+					} else {
+						reject(res.statusCode);
+					}
+				},
+				fail: function (res) {
+					reject(res);
+				},
+			});
+		} else {
+			return fetch(url, {
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: "POST",
+				body: JSON.stringify(obj)
+			}).then(function (res) {
+				if (res.status == 200 || res.status == 206) {
+					resolve(res.json());
 				} else {
-					reject(res.statusCode);
+					reject(res.status);
 				}
-			},
-			fail: function (res) {
+			}).catch(function (res) {
 				reject(res);
-			},
-		});
-		// let xhr = new XMLHttpRequest();
-		// xhr.onreadystatechange = function () {
-		// 	if (xhr.readyState == 4) {
-		// 		if (xhr.status == 200 || xhr.status == 206) {
-		// 			resolve(xhr.response);
-		// 		} else {
-		// 			reject(xhr.status);
-		// 		}
-		// 	}
-		// };
-		// xhr.open('POST', url, true);
-		// xhr.responseType = 'json';
-		// xhr.send(obj);
+			});
+		}
 	});
 }
 
@@ -267,6 +280,7 @@ module.exports.login = async function () {
 			}
 		}
 	}
+
 	return null;
 };
 

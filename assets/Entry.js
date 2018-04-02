@@ -36,6 +36,13 @@ window.shared.getOptions = function () {
 	return window.shared.options;
 };
 
+window.shared.isThirdParty = function () {
+	if (window.shared.getFBInstant() || window.shared.getWXInstant()) {
+		return true;
+	}
+	return false;
+};
+
 window.shared.events = new cc.EventTarget();
 
 cc.director.getPhysicsManager().enabled = true;
