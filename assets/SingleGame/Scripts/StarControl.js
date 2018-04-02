@@ -16,6 +16,10 @@ cc.Class({
             default: [],
             type: [cc.Node]
         },
+        dismissDBNode: {
+            default: null,
+            type: cc.Node
+        },
         dismissDist: {
             default: new cc.Vec2(70, 70)
         }
@@ -54,11 +58,16 @@ cc.Class({
                 }
                 var self = this;
                 self.players = [];
-                this.getComponent(cc.Animation).on('stop', function() {
+                // this.getComponent(cc.Animation).on('stop', function() {
+                //     self.node.removeFromParent();
+                // });
+                this.dismissDBNode.getComponent(dragonBones.ArmatureDisplay).addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                    self.dismissDBNode.getComponent(dragonBones.ArmatureDisplay).removeEventListener(dragonBones.EventObject.COMPLETE);
                     self.node.removeFromParent();
                 });
                 this.getComponent(cc.AudioSource).play();
-                this.getComponent(cc.Animation).play('star_dismiss');
+                // this.getComponent(cc.Animation).play('star_dismiss');
+                this.dismissDBNode.getComponent(dragonBones.ArmatureDisplay).playAnimation('animation', 1);
             }
         }
     },
