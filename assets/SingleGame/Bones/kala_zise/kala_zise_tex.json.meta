@@ -1,0 +1,7 @@
+{
+  "ver": "1.0.0",
+  "uuid": "05839cc3-c394-4bcb-ba77-f7cb8201e3b5",
+  "atlasJson": "{\"SubTexture\":[{\"x\":1,\"y\":1,\"width\":155,\"name\":\"weiyan\",\"height\":246},{\"x\":61,\"y\":451,\"width\":28,\"name\":\"youjiao_z\",\"height\":42},{\"x\":91,\"y\":451,\"width\":29,\"name\":\"zuojiao_z\",\"height\":40},{\"x\":1,\"y\":249,\"width\":174,\"name\":\"shenti_z\",\"height\":166},{\"x\":158,\"y\":1,\"width\":174,\"name\":\"shenti_b\",\"height\":166},{\"x\":334,\"y\":1,\"width\":164,\"name\":\"shenti_c\",\"height\":166},{\"x\":158,\"y\":169,\"width\":66,\"name\":\"tpuda_z\",\"height\":55},{\"x\":31,\"y\":451,\"width\":28,\"name\":\"youshou_z\",\"height\":57},{\"x\":1,\"y\":451,\"width\":28,\"name\":\"zuoshou_z\",\"height\":57},{\"x\":1,\"y\":417,\"width\":100,\"name\":\"zui_z\",\"height\":32},{\"x\":158,\"y\":226,\"width\":18,\"name\":\"youyanjing _z\",\"height\":18},{\"x\":91,\"y\":493,\"width\":18,\"name\":\"zuoyanjing_z\",\"height\":18}],\"imagePath\":\"kala_zise_tex.png\",\"width\":512,\"name\":\"kala_zise\",\"height\":512}",
+  "texture": "97cdc71e-bc2f-4d0b-937a-623be89d9aa8",
+  "subMetas": {}
+}

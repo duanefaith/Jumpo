@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "76173fb9-693f-48f0-b1cd-cfa61d6311c1",
+  "uuid": "ec3f89dc-4661-41ed-afb4-c07fbe580e1f",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "kala_hongse_3_tex": {
+    "kala_hongse_tex": {
       "ver": "1.0.3",
-      "uuid": "8406e101-7360-4bad-b49f-62d6f854f294",
-      "rawTextureUuid": "76173fb9-693f-48f0-b1cd-cfa61d6311c1",
+      "uuid": "5f207b6a-ec0c-49ae-814f-b5ffb8e8ec66",
+      "rawTextureUuid": "ec3f89dc-4661-41ed-afb4-c07fbe580e1f",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "97cdc71e-bc2f-4d0b-937a-623be89d9aa8",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "kala_zise_tex": {
+      "ver": "1.0.3",
+      "uuid": "4710de9e-9479-4eb4-b567-d9713271df4c",
+      "rawTextureUuid": "97cdc71e-bc2f-4d0b-937a-623be89d9aa8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -6.5,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 1,
+      "width": 497,
+      "height": 510,
+      "rawWidth": 512,
+      "rawHeight": 512,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

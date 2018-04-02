@@ -30,9 +30,9 @@ cc.Class({
         minScaleRatio: {
             default: 0.5
         },
-        playerIcon: {
-            default: null,
-            type: cc.Node
+        playerPrefabs: {
+            default: [],
+            type: [cc.Prefab]
         },
         graphicsPannel: {
             default: null,
@@ -69,6 +69,14 @@ cc.Class({
             STATE_STILL_1: 7,
             STATE_STILL_2: 8,
         };
+        this.playerIcon = null;
+        let selected = Math.floor(Math.random() * this.playerPrefabs.length);
+        if (selected >= this.playerPrefabs.length) {
+            selected = this.playerPrefabs.length - 1;
+        }
+        this.playerIcon = cc.instantiate(this.playerPrefabs[selected]);
+        this.node.addChild(this.playerIcon, -1);
+
         this.events = new cc.EventTarget();
         this.body = this.getComponent(cc.RigidBody);
         this.playerDisplay = this.playerIcon.getComponent(dragonBones.ArmatureDisplay);
@@ -146,9 +154,9 @@ cc.Class({
                 } else if (data.newValue == data.target.states.STATE_FALLING) {
                     data.target.playerDisplay.playAnimation('luoxia', 0);
                 } else if (data.newValue == data.target.states.STATE_FORCING_LOW) {
-                    data.target.playerDisplay.playAnimation('xuli', 1);
+                    // data.target.playerDisplay.playAnimation('xuli', 1);
                 } else if (data.newValue == data.target.states.STATE_FORCING_HIGH) {
-                    data.target.playerDisplay.playAnimation('xuli2', 1);
+                    data.target.playerDisplay.playAnimation('D_xuli2', 1);
                 } else if (data.newValue == data.target.states.STATE_JUMPING) {
                     if (data.extra.vec.x > 0) {
                         data.target.playerIcon.scaleX = - (Math.abs(data.target.playerIcon.scaleX));
@@ -172,9 +180,13 @@ cc.Class({
                     }
                     data.target.connectedBox = data.extra.box;
                     data.target.connectedBoxLeft = data.extra.left;
-                    data.target.playerDisplay.playAnimation('xuangua', 1);
+                    data.target.playerDisplay.addEventListener(dragonBones.EventObject.COMPLETE, function () {
+                        data.target.playerDisplay.removeEventListener(dragonBones.EventObject.COMPLETE);
+                        data.target.playerDisplay.playAnimation('xuangua_idle', 0);
+                    });
+                    data.target.playerDisplay.playAnimation('xuangua_huanchong', 1);
                 } else if (data.newValue == data.target.states.STATE_HANGING_FORCING) {
-                    data.target.playerDisplay.playAnimation('xuangua2', 1);
+                    // data.target.playerDisplay.playAnimation('xuangua2', 1);
                 } else if (data.newValue == data.target.states.STATE_STILL_1) {
                     data.target.playerDisplay.playAnimation('idle2', 2);
                     data.target.getComponents(cc.AudioSource)[1].play();
@@ -230,12 +242,18 @@ cc.Class({
             }
         }
 
+        let rate = finalDist / this.maxLineLength;
         if (this.connectedBox != null) {
+            let frame = Math.floor(25 * rate);
+            this.playerDisplay.armature().animation.gotoAndStopByFrame('xuangua2', frame);
             this.setState(this.states.STATE_HANGING_FORCING, {vec: vec});
         } else {
-            if ((finalDist / this.maxLineLength) <= 0.5) {
+            let baseRate = 0.4;
+            if (rate >= baseRate) {
                 this.setState(this.states.STATE_FORCING_HIGH, {vec: vec});
             } else {
+                let frame = Math.floor(30 * rate / baseRate) + 1;
+                this.playerDisplay.armature().animation.gotoAndStopByFrame('xuli', frame);
                 this.setState(this.states.STATE_FORCING_LOW, {vec: vec});
             }
         }
