@@ -42,11 +42,17 @@ SocketManager.prototype.connectRoom = function () {
 		let options = window.shared.getOptions();
 		this.roomSocket = new WebSocket(options.roomHost);
 		var self = this;
+
+		var pingInterval = function () {
+			SocketManager.prototype.sendToRoomSocket('ping', {});
+		};
+		var pingIntervalId;
 		this.roomSocket.onopen = function (event) {
 			console.log('onpen');
 			self.roomExtra = {};
 			self.setState(States.ROOM_CONNECTED);
 			self.events.emit('room_connected');
+			pingIntervalId = setInterval(pingInterval, 1000);
 		};
 		this.roomSocket.onmessage = function (event) {
 			console.log('onmessage');
@@ -83,7 +89,10 @@ SocketManager.prototype.connectRoom = function () {
 		};
 		this.roomSocket.onclose = function (event) {
 			console.log('onclose');
-			self.setState(States.NOT_CONNECTED)
+			if (pingIntervalId) {
+				clearInterval(pingIntervalId);
+			}
+			self.setState(States.NOT_CONNECTED);
 			self.events.emit('room_connect_close');
 		};
 		return true;

@@ -34,7 +34,7 @@ cc.Class({
 
     onShareBtnClicked () {
         let player = Global.getCurrentPlayer();
-        Global.shareContent(player.name + '也在玩Jumpo哦！', './res/raw-assets/SingleGame/Textures/share.png', {
+        Global.shareContent(player.name + '也在玩Jumpo哦！', './res/raw-assets/SingleGame/Textures/share.jpg', {
             type: 'invite',
             player: player.id
         });

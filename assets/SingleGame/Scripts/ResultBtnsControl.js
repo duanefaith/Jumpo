@@ -27,7 +27,7 @@ cc.Class({
 
     onShareBtnClicked () {
     	let player = Global.getCurrentPlayer();
-        Global.shareContent(player.name + '在Jumpo中拿到了' + this.score + '分哦，快来挑战我吧！', './res/raw-assets/SingleGame/Textures/share.png', {
+        Global.shareContent(player.name + '在Jumpo中拿到了' + this.score + '分哦，快来挑战我吧！', './res/raw-assets/SingleGame/Textures/share.jpg', {
             type: 'result_share',
             player: player.id
         });

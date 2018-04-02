@@ -356,10 +356,10 @@ module.exports.shareContent = async function (text, imagePath, data) {
 	let instant = window.shared.getFBInstant();
 	if (instant) {
 		try {
-			let data = await module.exports.loadImage(imagePath);
+			let imageData = await module.exports.loadImage(imagePath);
 			await instant.shareAsync({
 				intent: 'REQUEST',
-				image: data,
+				image: imageData,
 				text: text,
 				data: data
 			});
@@ -383,6 +383,14 @@ module.exports.shareContent = async function (text, imagePath, data) {
 		return result;
 	}
 	return false;
+};
+
+module.exports.getEntryData = function () {
+	let instant = window.shared.getFBInstant();
+	if (instant) {
+		return instant.getEntryPointData()
+	}
+	return null;
 };
 
 module.exports.loadImage = async function(url) {

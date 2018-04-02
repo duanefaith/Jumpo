@@ -49,19 +49,25 @@ cc.Class({
         this.hidden = true;
         this.isAnimating = false;
         this.titleLabel.string = this.title;
+        this.commonNodes = [];
+        this.contentNodes = [];
+        this.btnlNodes = [];
         this.animation = this.dialogOuter.getComponent(cc.Animation);
         let self = this;
         this.commonPrefabs.forEach((prefab) => {
             let component = cc.instantiate(prefab);
             self.node.addChild(component);
+            self.commonNodes.push(component);
         });
         this.contentPrefabs.forEach((prefab) => {
             let component = cc.instantiate(prefab);
             self.dialogInner.addChild(component);
+            this.contentNodes.push(component);
         });
         this.btnPrefabs.forEach((prefab) => {
             let component = cc.instantiate(prefab);
             self.dialogBtnLayout.addChild(component);
+            this.btnlNodes.push(component);
         });
         this.onShowListener = null;
         this.onDismissListener = null;
@@ -73,6 +79,18 @@ cc.Class({
 
     setOnDismissListener (listener) {
          this.onDismissListener = listener;
+    },
+
+    getCommonNodes () {
+        return this.commonNodes;
+    },
+
+    getContentNodes () {
+        return this.contentNodes;
+    },
+
+    getBtnNodes () {
+        return this.btnlNodes;
     },
 
     show () {

@@ -75,11 +75,19 @@ cc.Class({
         }
     },
 
+    refreshRoomUI (self, room) {
+        let players = room.players;
+        let memberCount = Object.keys(players).length;
+        if (memberCount == 1) {
+            
+        }
+    },
+
     onSendBtnClicked () {
          let roomId = SocketManager.getInstance().getRoomExtra('room_id');
          if (roomId) {
             let player = Global.getCurrentPlayer();
-            Global.shareContent(player.name + '邀请你来Jumpo参加一场战斗！', './res/raw-assets/SingleGame/Textures/share.png', {
+            Global.shareContent(player.name + '邀请你来Jumpo参加一场战斗！', './res/raw-assets/SingleGame/Textures/share.jpg', {
                 type: 'battle_request',
                 roomId: roomId
             });
